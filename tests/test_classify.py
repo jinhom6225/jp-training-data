@@ -39,6 +39,14 @@ from scraper.rules import FIELD_IDS
         ("溶接加工科", None, ["manufacturing"]),
         ("機械加工技術科", None, ["manufacturing"]),
         ("金属加工科", None, ["manufacturing"]),
+        # public 分類 strings seen in the first national collection
+        ("溶接マスター科", "普通課程(高卒1年課程)(金属関連分野)", ["manufacturing"]),
+        ("精密加工科", "離転職者訓練(施設内)(機械関連分野)", ["manufacturing"]),
+        ("電気設備技術科", "離転職者訓練(施設内)(電気関連分野)", ["building"]),
+        ("FAロボット科", "普通課程(高卒1年課程)(電気関連分野)", ["building", "manufacturing"]),
+        ("樹脂成形科", "離転職者訓練(施設内)(その他の製造関連分野)", ["manufacturing"]),
+        ("自動車工学科", "普通課程(高卒2年課程)(輸送サービス分野)", ["other"]),
+        ("美容師科", "実践コース(理容・美容関連分野)", ["other"]),
         # several fields
         ("Webデザイン+プログラミング基礎科(4か月)", None, ["it", "design"]),
         ("建築CADオペレーター科(3か月)【託児付】", None, ["design", "building"]),

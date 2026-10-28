@@ -27,6 +27,11 @@ categories:
   - {match: "デザイン分野", fields: [design]}
   - {match: "建設関連分野", fields: [building]}
   - {match: "製造関連分野", fields: [manufacturing]}
+  - {match: "金属関連分野", fields: [manufacturing]}
+  - {match: "機械関連分野", fields: [manufacturing]}
+  - {match: "電気関連分野", fields: [building]}
+  # Left as other on purpose (research §3.3): 輸送サービス (自動車整備),
+  # 理容・美容, 調理, 農業, 旅行・観光, その他の分野.
 
 keywords:
   it:
@@ -163,5 +168,10 @@ keywords:
     - 鋳造
     - 生産
     - 組立
+    - ロボット
+    - メカトロ
+    - 制御
+    - 電子
     - CNC
     - NC
+    - FA
