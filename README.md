@@ -50,7 +50,7 @@ Exit codes: 0 published, 2 anomaly (nothing written to `out/site`), 3 blocked by
 
 When the app's `tools/rule_cases.json` changes, copy it to `scraper/rule_cases.json`;
 `tests/test_rule_cases_sync.py` fails until the copies match (set `APP_REPO` if the
-app repo is not at `../jp_job_training_alert`).
+app repo is not at `../jp_job_training_alert` or `../../jp_job_training_alert`).
 
 ## Secrets
 
