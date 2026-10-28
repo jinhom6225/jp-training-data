@@ -1,0 +1,1184 @@
+{
+ "_comment": "Shared rule cases (plan D8): the app's Dart tests (test/data/rule_cases_test.dart, test/data/url_rules_test.dart) and the data pipeline's pytest (jp-training-data) both assert every case, so the two validators cannot drift. Schema: data_schema.md. originFields and lengths cases are courses in a pref/13.json: start from bases[base], apply set (key: value) and unset (keys removed), then the whole file must decode with no error iff ok.",
+ "hosts": {
+  "domains": [
+   "hellowork.mhlw.go.jp",
+   "example.com"
+  ],
+  "cases": [
+   {
+    "url": "https://hellowork.mhlw.go.jp/",
+    "allowed": true
+   },
+   {
+    "url": "https://www.hellowork.mhlw.go.jp/schedule/",
+    "allowed": true
+   },
+   {
+    "url": "https://a.b.hellowork.mhlw.go.jp/x?y=1#z",
+    "allowed": true
+   },
+   {
+    "url": "HTTPS://WWW.HELLOWORK.MHLW.GO.JP/",
+    "allowed": true
+   },
+   {
+    "url": "https://example.com",
+    "allowed": true
+   },
+   {
+    "url": "https://example.com?q=1",
+    "allowed": true
+   },
+   {
+    "url": "https://example.com#top",
+    "allowed": true
+   },
+   {
+    "url": "https://example.com/a%20b?q=%2F#%3A",
+    "allowed": true
+   },
+   {
+    "url": "http://hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "ftp://hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "//hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "hellowork.mhlw.go.jp",
+    "allowed": false
+   },
+   {
+    "url": "",
+    "allowed": false
+   },
+   {
+    "url": "not a url",
+    "allowed": false
+   },
+   {
+    "url": "https://evilhellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp.evil.com/",
+    "allowed": false
+   },
+   {
+    "url": "https://go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://evil.com/?u=hellowork.mhlw.go.jp",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp:443/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp:8443/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp:/",
+    "allowed": false
+   },
+   {
+    "url": "https://user@hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp@evil.com/",
+    "allowed": false
+   },
+   {
+    "url": "https://u%40x@hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork%2Emhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://sm%72j.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp./",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp../",
+    "allowed": false
+   },
+   {
+    "url": "https://.hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://www..hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://-x.hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://x-.hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp\t/",
+    "allowed": false
+   },
+   {
+    "url": "https://sm\trj.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp\n/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp /",
+    "allowed": false
+   },
+   {
+    "url": "https:// hellowork.mhlw.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp\\@evil.com/",
+    "allowed": false
+   },
+   {
+    "url": "https://[::1]/",
+    "allowed": false
+   },
+   {
+    "url": "https://[::1",
+    "allowed": false
+   },
+   {
+    "url": "https://127.0.0.1/",
+    "allowed": false
+   },
+   {
+    "url": "https://ｓｍｒｊ.go.jp/",
+    "allowed": false
+   },
+   {
+    "url": "https://hellowork.mhlw.go.jp\u200b/",
+    "allowed": false
+   },
+   {
+    "url": "https://Kanto.example.com/",
+    "allowed": false
+   },
+   {
+    "url": "https://xn--n3h.example.com/",
+    "allowed": true
+   }
+  ]
+ },
+ "phones": [
+  {
+   "value": "06-1234-5678",
+   "ok": true
+  },
+  {
+   "value": "03-1234-5678",
+   "ok": true
+  },
+  {
+   "value": "0120-123-456",
+   "ok": true
+  },
+  {
+   "value": "0570-012-345",
+   "ok": true
+  },
+  {
+   "value": "050-1234-5678",
+   "ok": true
+  },
+  {
+   "value": "090-1234-5678",
+   "ok": true
+  },
+  {
+   "value": "0466-12-3456",
+   "ok": true
+  },
+  {
+   "value": "0612345678",
+   "ok": false
+  },
+  {
+   "value": "+81-6-1234-5678",
+   "ok": false
+  },
+  {
+   "value": "０６-１２３４-５６７８",
+   "ok": false
+  },
+  {
+   "value": "06-1234-567",
+   "ok": false
+  },
+  {
+   "value": "06 1234 5678",
+   "ok": false
+  },
+  {
+   "value": "00-1234-5678",
+   "ok": false
+  },
+  {
+   "value": "010-1234-5678",
+   "ok": false
+  },
+  {
+   "value": "0990-123-456",
+   "ok": false
+  },
+  {
+   "value": "06-1234-5678;ext=1",
+   "ok": false
+  },
+  {
+   "value": "",
+   "ok": false
+  }
+ ],
+ "dates": [
+  {
+   "value": "2026-12-01",
+   "ok": true
+  },
+  {
+   "value": "2028-02-29",
+   "ok": true
+  },
+  {
+   "value": "2027-01-25",
+   "ok": true
+  },
+  {
+   "value": "2027-02-29",
+   "ok": false
+  },
+  {
+   "value": "2026-13-01",
+   "ok": false
+  },
+  {
+   "value": "2026-1-01",
+   "ok": false
+  },
+  {
+   "value": "2026/12/01",
+   "ok": false
+  },
+  {
+   "value": "２０２６-12-01",
+   "ok": false
+  },
+  {
+   "value": "2026-12-01T00:00:00+09:00",
+   "ok": false
+  },
+  {
+   "value": "0000-01-01",
+   "ok": false
+  },
+  {
+   "value": "",
+   "ok": false
+  }
+ ],
+ "dateTimes": [
+  {
+   "value": "2026-10-28T06:41:00+09:00",
+   "ok": true,
+   "utc": "2026-10-27T21:41:00.000Z"
+  },
+  {
+   "value": "2026-10-27T21:41:00Z",
+   "ok": true,
+   "utc": "2026-10-27T21:41:00.000Z"
+  },
+  {
+   "value": "2026-10-28T06:41:00.123+09:00",
+   "ok": true,
+   "utc": "2026-10-27T21:41:00.123Z"
+  },
+  {
+   "value": "2026-10-28T06:41:00",
+   "ok": false
+  },
+  {
+   "value": "2026-10-28T06:41+09:00",
+   "ok": false
+  },
+  {
+   "value": "2026-10-28 06:41:00+09:00",
+   "ok": false
+  },
+  {
+   "value": "2026-10-28T25:41:00+09:00",
+   "ok": false
+  },
+  {
+   "value": "2026-02-30T06:41:00+09:00",
+   "ok": false
+  },
+  {
+   "value": "2026-10-28",
+   "ok": false
+  },
+  {
+   "value": "",
+   "ok": false
+  }
+ ],
+ "entryMonths": [
+  {
+   "value": "2027-04",
+   "ok": true
+  },
+  {
+   "value": "2026-12",
+   "ok": true
+  },
+  {
+   "value": "2027-4",
+   "ok": false
+  },
+  {
+   "value": "2027-13",
+   "ok": false
+  },
+  {
+   "value": "2027-00",
+   "ok": false
+  },
+  {
+   "value": "2027/04",
+   "ok": false
+  },
+  {
+   "value": "2027-04-01",
+   "ok": false
+  }
+ ],
+ "courseIds": [
+  {
+   "value": "01-08-27-0123",
+   "pref": "27",
+   "origin": "hwis",
+   "ok": true
+  },
+  {
+   "value": "02-08-13-0001",
+   "pref": "13",
+   "origin": "hwis",
+   "ok": true
+  },
+  {
+   "value": "01-08-27-0123",
+   "pref": "28",
+   "origin": "hwis",
+   "ok": false
+  },
+  {
+   "value": "1-08-27-0123",
+   "pref": "27",
+   "origin": "hwis",
+   "ok": false
+  },
+  {
+   "value": "01-08-27-123",
+   "pref": "27",
+   "origin": "hwis",
+   "ok": false
+  },
+  {
+   "value": "01-08-27-01234",
+   "pref": "27",
+   "origin": "hwis",
+   "ok": false
+  },
+  {
+   "value": "tokyo-toritsu-jobu-202704",
+   "pref": "13",
+   "origin": "override",
+   "ok": true
+  },
+  {
+   "value": "tokyo-toritsu-jobu-202704",
+   "pref": "27",
+   "origin": "override",
+   "ok": false
+  },
+  {
+   "value": "tokyo-toritsu-jobu-202704",
+   "pref": "13",
+   "origin": "hwis",
+   "ok": false
+  },
+  {
+   "value": "01-08-13-0123",
+   "pref": "13",
+   "origin": "override",
+   "ok": false
+  },
+  {
+   "value": "tokyo-",
+   "pref": "13",
+   "origin": "override",
+   "ok": false
+  },
+  {
+   "value": "tokyo-Toritsu",
+   "pref": "13",
+   "origin": "override",
+   "ok": false
+  },
+  {
+   "value": "tokyo-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "pref": "13",
+   "origin": "override",
+   "ok": false
+  }
+ ],
+ "fieldIds": [
+  {
+   "value": "it",
+   "ok": true
+  },
+  {
+   "value": "office",
+   "ok": true
+  },
+  {
+   "value": "medical",
+   "ok": true
+  },
+  {
+   "value": "care",
+   "ok": true
+  },
+  {
+   "value": "design",
+   "ok": true
+  },
+  {
+   "value": "building",
+   "ok": true
+  },
+  {
+   "value": "manufacturing",
+   "ok": true
+  },
+  {
+   "value": "other",
+   "ok": true
+  },
+  {
+   "value": "IT",
+   "ok": false
+  },
+  {
+   "value": "all",
+   "ok": false
+  },
+  {
+   "value": "cooking",
+   "ok": false
+  },
+  {
+   "value": "",
+   "ok": false
+  }
+ ],
+ "texts": [
+  {
+   "value": "Webデザイン科",
+   "ok": true,
+   "note": "plain"
+  },
+  {
+   "value": "漢数字〇とJIS〇",
+   "ok": true,
+   "note": "U+3007 ideographic zero (Nl) is a kanji numeral, allowed"
+  },
+  {
+   "value": "託児○あり",
+   "ok": true,
+   "note": "U+25CB white circle (So), allowed"
+  },
+  {
+   "value": "①訓練の内容",
+   "ok": true,
+   "note": "circled digits (No) are symbols NFKC turns into ASCII; allowed if left"
+  },
+  {
+   "value": "対象：\n雇用保険を受給できない方",
+   "ok": true,
+   "note": "LF allowed in text"
+  },
+  {
+   "value": "全角スペース\u3000と半角 スペース",
+   "ok": true,
+   "note": "U+3000 and U+0020 allowed"
+  },
+  {
+   "value": "第２期",
+   "ok": false,
+   "note": "full-width digit (Nd)"
+  },
+  {
+   "value": "\u0663\u0661",
+   "ok": false,
+   "note": "Arabic-Indic digits (Nd)"
+  },
+  {
+   "value": "06\u200b-1234-5678",
+   "ok": false,
+   "note": "ZWSP (Cf)"
+  },
+  {
+   "value": "a\u00a0b",
+   "ok": false,
+   "note": "NBSP (Zs), NFKC turns it into a space"
+  },
+  {
+   "value": "a\rb",
+   "ok": false,
+   "note": "CR (Cc)"
+  },
+  {
+   "value": "a\tb",
+   "ok": false,
+   "note": "TAB (Cc)"
+  },
+  {
+   "value": "a\u2028b",
+   "ok": false,
+   "note": "line separator (Zl)"
+  },
+  {
+   "value": "note\u202e",
+   "ok": false,
+   "note": "bidi override (Cf)"
+  },
+  {
+   "value": "abc\u00addef",
+   "ok": false,
+   "note": "soft hyphen (Cf)"
+  }
+ ],
+ "rounds": [
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ]
+   ],
+   "ok": true,
+   "note": "one round"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-24",
+     "2026-11-24"
+    ]
+   ],
+   "ok": true,
+   "note": "start == end, a one-day round"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     3,
+     "2026-12-01",
+     "2026-12-20"
+    ]
+   ],
+   "ok": true,
+   "note": "numbering 1, 3"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     2,
+     "2026-11-24",
+     "2026-12-10"
+    ]
+   ],
+   "ok": true,
+   "note": "next start == previous end"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     2,
+     "2026-11-20",
+     "2026-12-10"
+    ]
+   ],
+   "ok": true,
+   "note": "overlap"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     2,
+     "2026-11-01",
+     "2026-11-24"
+    ]
+   ],
+   "ok": true,
+   "note": "same dates"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-25",
+     "2026-11-24"
+    ]
+   ],
+   "ok": false,
+   "note": "start after end"
+  },
+  {
+   "rounds": [
+    [
+     2,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     1,
+     "2026-12-01",
+     "2026-12-20"
+    ]
+   ],
+   "ok": false,
+   "note": "no not ascending"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     1,
+     "2026-12-01",
+     "2026-12-20"
+    ]
+   ],
+   "ok": false,
+   "note": "repeated no"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-10",
+     "2026-11-24"
+    ],
+    [
+     2,
+     "2026-11-01",
+     "2026-12-20"
+    ]
+   ],
+   "ok": false,
+   "note": "start before previous start"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-24"
+    ],
+    [
+     2,
+     "2026-11-10",
+     "2026-11-20"
+    ]
+   ],
+   "ok": false,
+   "note": "end before previous end"
+  },
+  {
+   "rounds": [
+    [
+     4,
+     "2026-11-01",
+     "2026-11-24"
+    ]
+   ],
+   "ok": false,
+   "note": "no out of 1-3"
+  },
+  {
+   "rounds": [
+    [
+     0,
+     "2026-11-01",
+     "2026-11-24"
+    ]
+   ],
+   "ok": false,
+   "note": "no out of 1-3"
+  },
+  {
+   "rounds": [],
+   "ok": false,
+   "note": "none"
+  },
+  {
+   "rounds": [
+    [
+     1,
+     "2026-11-01",
+     "2026-11-02"
+    ],
+    [
+     2,
+     "2026-11-03",
+     "2026-11-04"
+    ],
+    [
+     3,
+     "2026-11-05",
+     "2026-11-06"
+    ],
+    [
+     3,
+     "2026-11-07",
+     "2026-11-08"
+    ]
+   ],
+   "ok": false,
+   "note": "more than 3"
+  }
+ ],
+ "bases": {
+  "hwis": {
+   "id": "01-08-13-0001",
+   "origin": "hwis",
+   "kind": "kyushoku",
+   "name": "OA事務科",
+   "fields": [
+    "office"
+   ],
+   "city": "新宿区",
+   "address": null,
+   "rounds": [
+    {
+     "no": 1,
+     "start": "2026-11-05",
+     "end": "2026-11-26"
+    }
+   ],
+   "trainingStart": "2027-01-08",
+   "trainingEnd": "2027-04-07",
+   "hours": "9:30～15:40",
+   "selfCost": "0円",
+   "capacity": 20,
+   "selectionDate": null,
+   "resultDate": null,
+   "conditions": null,
+   "childcare": false,
+   "provider": "サンプルビジネススクール",
+   "phone": "03-1234-5678",
+   "sourceUrl": "https://www.hellowork.mhlw.go.jp/kensaku/GECA110010.do?screenId=GECA110010&action=dispDetailBtn&kSNo=01-08-13-0001",
+   "checkedAt": "2026-11-10T06:35:00+09:00"
+  },
+  "override": {
+   "id": "tokyo-toritsu-johoku-202704",
+   "origin": "override",
+   "kind": "public",
+   "name": "都立城北職業能力開発センター",
+   "fields": [
+    "manufacturing",
+    "building"
+   ],
+   "city": "板橋区",
+   "address": null,
+   "rounds": [
+    {
+     "no": 1,
+     "start": "2027-01-07",
+     "end": "2027-01-29"
+    }
+   ],
+   "trainingStart": null,
+   "trainingEnd": null,
+   "hours": null,
+   "selfCost": null,
+   "capacity": null,
+   "selectionDate": null,
+   "resultDate": null,
+   "conditions": null,
+   "childcare": false,
+   "provider": null,
+   "phone": null,
+   "sourceUrl": "https://www.hataraku.metro.tokyo.lg.jp/shokunou/",
+   "sourceName": "TOKYOはたらくネット",
+   "checkedAt": "2026-11-02T10:00:00+09:00",
+   "entryMonth": "2027-04",
+   "targetCourses": [
+    "機械加工科",
+    "ビル設備管理科"
+   ]
+  }
+ },
+ "originFields": [
+  {
+   "base": "hwis",
+   "set": {},
+   "unset": [],
+   "ok": true,
+   "note": "base"
+  },
+  {
+   "base": "override",
+   "set": {},
+   "unset": [],
+   "ok": true,
+   "note": "base"
+  },
+  {
+   "base": "hwis",
+   "set": {
+    "targetCourses": []
+   },
+   "unset": [],
+   "ok": true,
+   "note": "hwis targetCourses [] is the same as absent"
+  },
+  {
+   "base": "hwis",
+   "set": {},
+   "unset": [
+    "city",
+    "address",
+    "hours",
+    "selfCost",
+    "capacity",
+    "selectionDate",
+    "resultDate",
+    "conditions",
+    "phone"
+   ],
+   "ok": true,
+   "note": "optional keys absent"
+  },
+  {
+   "base": "hwis",
+   "set": {
+    "provider": null
+   },
+   "unset": [],
+   "ok": false,
+   "note": "hwis needs provider"
+  },
+  {
+   "base": "hwis",
+   "set": {},
+   "unset": [
+    "provider"
+   ],
+   "ok": false,
+   "note": "hwis needs provider"
+  },
+  {
+   "base": "hwis",
+   "set": {
+    "trainingStart": null
+   },
+   "unset": [],
+   "ok": false,
+   "note": "hwis needs trainingStart"
+  },
+  {
+   "base": "hwis",
+   "set": {
+    "sourceName": "x"
+   },
+   "unset": [],
+   "ok": false,
+   "note": "override-only key on hwis"
+  },
+  {
+   "base": "hwis",
+   "set": {
+    "entryMonth": "2027-04"
+   },
+   "unset": [],
+   "ok": false,
+   "note": "override-only key on hwis"
+  },
+  {
+   "base": "hwis",
+   "set": {
+    "targetCourses": [
+     "x科"
+    ]
+   },
+   "unset": [],
+   "ok": false,
+   "note": "override-only key on hwis"
+  },
+  {
+   "base": "override",
+   "set": {},
+   "unset": [
+    "entryMonth"
+   ],
+   "ok": false,
+   "note": "override needs entryMonth"
+  },
+  {
+   "base": "override",
+   "set": {
+    "sourceName": null
+   },
+   "unset": [],
+   "ok": false,
+   "note": "override needs sourceName"
+  },
+  {
+   "base": "override",
+   "set": {
+    "targetCourses": []
+   },
+   "unset": [],
+   "ok": false,
+   "note": "override needs targetCourses"
+  },
+  {
+   "base": "override",
+   "set": {
+    "provider": null,
+    "trainingStart": null
+   },
+   "unset": [],
+   "ok": true,
+   "note": "override may leave hwis-required keys null"
+  }
+ ],
+ "lengthLimits": {
+  "name": 100,
+  "city": 40,
+  "address": 120,
+  "hours": 80,
+  "selfCost": 80,
+  "conditions": 300,
+  "provider": 100,
+  "sourceName": 60,
+  "targetCourse": 100,
+  "sourceUrl": 500
+ },
+ "lengths": [
+  {
+   "base": "hwis",
+   "key": "name",
+   "length": 100,
+   "ok": true
+  },
+  {
+   "base": "hwis",
+   "key": "name",
+   "length": 101,
+   "ok": false
+  },
+  {
+   "base": "hwis",
+   "key": "conditions",
+   "length": 300,
+   "ok": true
+  },
+  {
+   "base": "hwis",
+   "key": "conditions",
+   "length": 301,
+   "ok": false
+  },
+  {
+   "base": "hwis",
+   "key": "provider",
+   "length": 100,
+   "ok": true
+  },
+  {
+   "base": "hwis",
+   "key": "provider",
+   "length": 101,
+   "ok": false
+  },
+  {
+   "base": "override",
+   "key": "sourceName",
+   "length": 60,
+   "ok": true
+  },
+  {
+   "base": "override",
+   "key": "sourceName",
+   "length": 61,
+   "ok": false
+  },
+  {
+   "base": "hwis",
+   "key": "city",
+   "length": 40,
+   "ok": true
+  },
+  {
+   "base": "hwis",
+   "key": "city",
+   "length": 41,
+   "ok": false
+  },
+  {
+   "base": "override",
+   "key": "targetCourses",
+   "length": 100,
+   "ok": true,
+   "note": "each item"
+  },
+  {
+   "base": "override",
+   "key": "targetCourses",
+   "length": 101,
+   "ok": false,
+   "note": "each item"
+  }
+ ],
+ "futureLimitDays": 7,
+ "instantsAhead": [
+  {
+   "value": "2026-11-17T06:41:00+09:00",
+   "now": "2026-11-10T06:41:00+09:00",
+   "ok": true,
+   "note": "exactly 7 days ahead"
+  },
+  {
+   "value": "2026-11-17T06:41:01+09:00",
+   "now": "2026-11-10T06:41:00+09:00",
+   "ok": false,
+   "note": "just over 7 days ahead"
+  },
+  {
+   "value": "2026-11-09T06:41:00+09:00",
+   "now": "2026-11-10T06:41:00+09:00",
+   "ok": true,
+   "note": "past"
+  },
+  {
+   "value": "2030-01-01T00:00:00+09:00",
+   "now": "2026-11-10T06:41:00+09:00",
+   "ok": false,
+   "note": "far future"
+  }
+ ],
+ "pushNames": [
+  {
+   "value": "Webデザイン科",
+   "ok": true
+  },
+  {
+   "value": "第2期 Java科 2026年度",
+   "ok": true
+  },
+  {
+   "value": "介護職員初任者研修科（3か月）",
+   "ok": true
+  },
+  {
+   "value": "https://evil.example",
+   "ok": false,
+   "note": "URL"
+  },
+  {
+   "value": "www.example.com 講座",
+   "ok": false,
+   "note": "www."
+  },
+  {
+   "value": "info@example.jp",
+   "ok": false,
+   "note": "mail"
+  },
+  {
+   "value": "お得な講座 example.jp",
+   "ok": false,
+   "note": "domain"
+  },
+  {
+   "value": "お電話 06-1234-5678",
+   "ok": false,
+   "note": "phone"
+  },
+  {
+   "value": "0120ー123ー456",
+   "ok": false,
+   "note": "phone with ー"
+  },
+  {
+   "value": "受付 0612345678",
+   "ok": false,
+   "note": "6+ digits"
+  },
+  {
+   "value": "",
+   "ok": false
+  },
+  {
+   "value": "あああああああああああああああああああああああああああああああああああああああああ",
+   "ok": false,
+   "note": "over 40"
+  }
+ ]
+}

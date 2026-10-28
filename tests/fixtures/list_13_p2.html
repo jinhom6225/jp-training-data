@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>ハローワークインターネットサービス - 職業訓練検索・一覧</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=0.5,user-scalable=yes,initial-scale=1.0">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="jsp/img/favicon.ico">
+<link rel="stylesheet" href="jsp/css/reset.css">
+<link rel="stylesheet" href="jsp/css/buttons_green.css">
+<link rel="stylesheet" href="jsp/css/table_green.css">
+<link rel="stylesheet" href="jsp/css/navbar_green.css">
+<link rel="stylesheet" href="jsp/css/page.css">
+<link rel="stylesheet" href="jsp/css/progress_green.css">
+<link rel="stylesheet" href="jsp/css/common_green.css">
+<link rel="stylesheet" href="jsp/css/jquery-ui.css">
+<link rel="stylesheet" href="jsp/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="jsp/css/accordion.css">
+<link rel="stylesheet" href="jsp/css/accordion_style.css">
+<link rel="stylesheet" href="jsp/css/navigation.css">
+<link rel="stylesheet" href="jsp/css/navigation_style.css">
+
+</head>
+<body onload="init();">
+
+<div id="all">
+<header id="top_header">
+
+<div id="header" class="flex align_center last_right nowrap">
+	<a href="https://www.hellowork.mhlw.go.jp/index.html" class="flex nowrap">
+		<img class="top_image_logo"   src="jsp/img/mhlwlogo-1.gif">
+		<img class="top_image_min769" src="jsp/img/logo_big.gif">
+		<img class="top_image_max768" src="jsp/img/logo_small.gif">
+	</a>
+	<div class="flex jus_end align_center">
+		<script type="text/javascript" src="jsp/js/ewbc.min.js"></script>
+		<a href="javascript:void(0);" id="pt_enable">
+			<img class="img_small" src="jsp/img/yasashii.gif" alt="やさしいブラウザ・クラウド版はこちらからご利用ください" title="やさしいブラウザ">
+		</a>
+		<a href="https://www.mhlw.go.jp/index.html" target="_blank">
+			<img class="img_small ml05" src="jsp/img/000820328.jpg" alt="厚生労働省Webサイトはこちら" title="厚生労働省">
+		</a>
+<!-- 		<div style="min-width:40px"></div> -->
+	</div>
+</div>
+				<link rel="stylesheet" type="text/css" href="jsp/css/ECA150/ECA150.css">
+
+				<div id="breadcrumbs" class="m_side5p"><span>
+<a href="https://www.hellowork.mhlw.go.jp/index.html">トップ</a>
+&nbsp;&gt;&nbsp;職業訓練検索
+</span></div>
+</header><p class="pagebottom"><a href="#bottom">ページ<br>最下部へ<br><i class="fa fa-2x fa-chevron-down"></i></a></p>
+<div id="container">
+<div class="page_title">訓練検索・一覧</div><hr class="media_nodisp">
+<form name="form_1" id="ID_form_1" method="post" action="GECA150010.do" novalidate="novalidate">
+<input type="text" style="position:absolute;visibility:hidden" disabled />
+<table id="ID_main_table" class="normal mb1">
+<tr>
+<th class="nowrap" scope="row">コース種別<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td class="iew2" colspan="2"><div class="flex input"><div id="ID_courseShubetsuCKBox" name="courseShubetsuCKBox" class="flex input align_center mb03 m0imp"><div id="ID_courseShubetsuCKBoxD" class="flex input m0imp"><div class="checkbox"><label id="ID_LcourseShubetsuCKBox1" for="ID_courseShubetsuCKBox1"><input type="checkbox" id="ID_courseShubetsuCKBox1" name="courseShubetsuCKBox" value="1" checked>公共職業訓練</label></div>
+<div class="checkbox"><label id="ID_LcourseShubetsuCKBox2" for="ID_courseShubetsuCKBox2"><input type="checkbox" id="ID_courseShubetsuCKBox2" name="courseShubetsuCKBox" value="2" checked>求職者支援訓練</label></div>
+<div class="checkbox"><label id="ID_LcourseShubetsuCKBox3" for="ID_courseShubetsuCKBox3"><input type="checkbox" id="ID_courseShubetsuCKBox3" name="courseShubetsuCKBox" value="3">障害者訓練</label></div>
+<div class="checkbox"><label id="ID_LcourseShubetsuCKBox4" for="ID_courseShubetsuCKBox4"><input type="checkbox" id="ID_courseShubetsuCKBox4" name="courseShubetsuCKBox" value="4">介護労働講習</label></div>
+<div class="checkbox"><label id="ID_LcourseShubetsuCKBox5" for="ID_courseShubetsuCKBox5"><input type="checkbox" id="ID_courseShubetsuCKBox5" name="courseShubetsuCKBox" value="5">学卒訓練</label></div>
+<div class="checkbox"><label id="ID_LcourseShubetsuCKBox6" for="ID_courseShubetsuCKBox6"><input type="checkbox" id="ID_courseShubetsuCKBox6" name="courseShubetsuCKBox" value="6">その他</label></div>
+</div></div></div></td></tr>
+<tr>
+<th scope="row" rowspan="8"><div class="fb nowrap mb1 mr1">エリア</div><div class="fb fs0_875">
+									訓練実施施設所在地と訓練を実施する会場で所在する都道府県が異なる場合、選択していない都道府県で実施する職業訓練を表示する場合があります。
+								</div><span class="nes_label nes1 any">任意</span></th><td class="nes2" rowspan="8"><span class="nes_label any">任意</span></td><td class="tarea nowrap"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox0" for="ID_hokkaidoTohokuSCKBox0"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox0" name="hokkaidoTohokuSCKBox" value="0">北海道／東北</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_hokkaidoTohokuSCKBox" name="hokkaidoTohokuSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox1" for="ID_hokkaidoTohokuSCKBox1"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox1" name="hokkaidoTohokuSCKBox" value="1">北海道</label></div>
+<div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox2" for="ID_hokkaidoTohokuSCKBox2"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox2" name="hokkaidoTohokuSCKBox" value="2">青森</label></div>
+<div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox3" for="ID_hokkaidoTohokuSCKBox3"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox3" name="hokkaidoTohokuSCKBox" value="3">岩手</label></div>
+<div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox4" for="ID_hokkaidoTohokuSCKBox4"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox4" name="hokkaidoTohokuSCKBox" value="4">宮城</label></div>
+<div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox5" for="ID_hokkaidoTohokuSCKBox5"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox5" name="hokkaidoTohokuSCKBox" value="5">秋田</label></div>
+<div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox6" for="ID_hokkaidoTohokuSCKBox6"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox6" name="hokkaidoTohokuSCKBox" value="6">山形</label></div>
+<div class="checkbox"><label id="ID_LhokkaidoTohokuSCKBox7" for="ID_hokkaidoTohokuSCKBox7"><input type="checkbox" id="ID_hokkaidoTohokuSCKBox7" name="hokkaidoTohokuSCKBox" value="7">福島</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LkantouSCKBox0" for="ID_kantouSCKBox0"><input type="checkbox" id="ID_kantouSCKBox0" name="kantouSCKBox" value="0">関東</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_kantouSCKBox" name="kantouSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LkantouSCKBox8" for="ID_kantouSCKBox8"><input type="checkbox" id="ID_kantouSCKBox8" name="kantouSCKBox" value="8">茨城</label></div>
+<div class="checkbox"><label id="ID_LkantouSCKBox9" for="ID_kantouSCKBox9"><input type="checkbox" id="ID_kantouSCKBox9" name="kantouSCKBox" value="9">栃木</label></div>
+<div class="checkbox"><label id="ID_LkantouSCKBox10" for="ID_kantouSCKBox10"><input type="checkbox" id="ID_kantouSCKBox10" name="kantouSCKBox" value="10">群馬</label></div>
+<div class="checkbox"><label id="ID_LkantouSCKBox11" for="ID_kantouSCKBox11"><input type="checkbox" id="ID_kantouSCKBox11" name="kantouSCKBox" value="11">埼玉</label></div>
+<div class="checkbox"><label id="ID_LkantouSCKBox12" for="ID_kantouSCKBox12"><input type="checkbox" id="ID_kantouSCKBox12" name="kantouSCKBox" value="12">千葉</label></div>
+<div class="checkbox"><label id="ID_LkantouSCKBox13" for="ID_kantouSCKBox13"><input type="checkbox" id="ID_kantouSCKBox13" name="kantouSCKBox" value="13" checked>東京</label></div>
+<div class="checkbox"><label id="ID_LkantouSCKBox14" for="ID_kantouSCKBox14"><input type="checkbox" id="ID_kantouSCKBox14" name="kantouSCKBox" value="14">神奈川</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox0" for="ID_kousinetu_HokurikuSCKBox0"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox0" name="kousinetu_HokurikuSCKBox" value="0">甲信越／北陸</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_kousinetu_HokurikuSCKBox" name="kousinetu_HokurikuSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox15" for="ID_kousinetu_HokurikuSCKBox15"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox15" name="kousinetu_HokurikuSCKBox" value="15">新潟</label></div>
+<div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox16" for="ID_kousinetu_HokurikuSCKBox16"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox16" name="kousinetu_HokurikuSCKBox" value="16">富山</label></div>
+<div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox17" for="ID_kousinetu_HokurikuSCKBox17"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox17" name="kousinetu_HokurikuSCKBox" value="17">石川</label></div>
+<div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox18" for="ID_kousinetu_HokurikuSCKBox18"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox18" name="kousinetu_HokurikuSCKBox" value="18">福井</label></div>
+<div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox19" for="ID_kousinetu_HokurikuSCKBox19"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox19" name="kousinetu_HokurikuSCKBox" value="19">山梨</label></div>
+<div class="checkbox"><label id="ID_Lkousinetu_HokurikuSCKBox20" for="ID_kousinetu_HokurikuSCKBox20"><input type="checkbox" id="ID_kousinetu_HokurikuSCKBox20" name="kousinetu_HokurikuSCKBox" value="20">長野</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LtoukaiSCKBox0" for="ID_toukaiSCKBox0"><input type="checkbox" id="ID_toukaiSCKBox0" name="toukaiSCKBox" value="0">東海</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_toukaiSCKBox" name="toukaiSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LtoukaiSCKBox21" for="ID_toukaiSCKBox21"><input type="checkbox" id="ID_toukaiSCKBox21" name="toukaiSCKBox" value="21">岐阜</label></div>
+<div class="checkbox"><label id="ID_LtoukaiSCKBox22" for="ID_toukaiSCKBox22"><input type="checkbox" id="ID_toukaiSCKBox22" name="toukaiSCKBox" value="22">静岡</label></div>
+<div class="checkbox"><label id="ID_LtoukaiSCKBox23" for="ID_toukaiSCKBox23"><input type="checkbox" id="ID_toukaiSCKBox23" name="toukaiSCKBox" value="23">愛知</label></div>
+<div class="checkbox"><label id="ID_LtoukaiSCKBox24" for="ID_toukaiSCKBox24"><input type="checkbox" id="ID_toukaiSCKBox24" name="toukaiSCKBox" value="24">三重</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LkinkiSCKBox0" for="ID_kinkiSCKBox0"><input type="checkbox" id="ID_kinkiSCKBox0" name="kinkiSCKBox" value="0">近畿</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_kinkiSCKBox" name="kinkiSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LkinkiSCKBox25" for="ID_kinkiSCKBox25"><input type="checkbox" id="ID_kinkiSCKBox25" name="kinkiSCKBox" value="25">滋賀</label></div>
+<div class="checkbox"><label id="ID_LkinkiSCKBox26" for="ID_kinkiSCKBox26"><input type="checkbox" id="ID_kinkiSCKBox26" name="kinkiSCKBox" value="26">京都</label></div>
+<div class="checkbox"><label id="ID_LkinkiSCKBox27" for="ID_kinkiSCKBox27"><input type="checkbox" id="ID_kinkiSCKBox27" name="kinkiSCKBox" value="27">大阪</label></div>
+<div class="checkbox"><label id="ID_LkinkiSCKBox28" for="ID_kinkiSCKBox28"><input type="checkbox" id="ID_kinkiSCKBox28" name="kinkiSCKBox" value="28">兵庫</label></div>
+<div class="checkbox"><label id="ID_LkinkiSCKBox29" for="ID_kinkiSCKBox29"><input type="checkbox" id="ID_kinkiSCKBox29" name="kinkiSCKBox" value="29">奈良</label></div>
+<div class="checkbox"><label id="ID_LkinkiSCKBox30" for="ID_kinkiSCKBox30"><input type="checkbox" id="ID_kinkiSCKBox30" name="kinkiSCKBox" value="30">和歌山</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LtyugokuSCKBox0" for="ID_tyugokuSCKBox0"><input type="checkbox" id="ID_tyugokuSCKBox0" name="tyugokuSCKBox" value="0">中国</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_tyugokuSCKBox" name="tyugokuSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LtyugokuSCKBox31" for="ID_tyugokuSCKBox31"><input type="checkbox" id="ID_tyugokuSCKBox31" name="tyugokuSCKBox" value="31">鳥取</label></div>
+<div class="checkbox"><label id="ID_LtyugokuSCKBox32" for="ID_tyugokuSCKBox32"><input type="checkbox" id="ID_tyugokuSCKBox32" name="tyugokuSCKBox" value="32">島根</label></div>
+<div class="checkbox"><label id="ID_LtyugokuSCKBox33" for="ID_tyugokuSCKBox33"><input type="checkbox" id="ID_tyugokuSCKBox33" name="tyugokuSCKBox" value="33">岡山</label></div>
+<div class="checkbox"><label id="ID_LtyugokuSCKBox34" for="ID_tyugokuSCKBox34"><input type="checkbox" id="ID_tyugokuSCKBox34" name="tyugokuSCKBox" value="34">広島</label></div>
+<div class="checkbox"><label id="ID_LtyugokuSCKBox35" for="ID_tyugokuSCKBox35"><input type="checkbox" id="ID_tyugokuSCKBox35" name="tyugokuSCKBox" value="35">山口</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LsikokuSCKBox0" for="ID_sikokuSCKBox0"><input type="checkbox" id="ID_sikokuSCKBox0" name="sikokuSCKBox" value="0">四国</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_sikokuSCKBox" name="sikokuSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LsikokuSCKBox36" for="ID_sikokuSCKBox36"><input type="checkbox" id="ID_sikokuSCKBox36" name="sikokuSCKBox" value="36">徳島</label></div>
+<div class="checkbox"><label id="ID_LsikokuSCKBox37" for="ID_sikokuSCKBox37"><input type="checkbox" id="ID_sikokuSCKBox37" name="sikokuSCKBox" value="37">香川</label></div>
+<div class="checkbox"><label id="ID_LsikokuSCKBox38" for="ID_sikokuSCKBox38"><input type="checkbox" id="ID_sikokuSCKBox38" name="sikokuSCKBox" value="38">愛媛</label></div>
+<div class="checkbox"><label id="ID_LsikokuSCKBox39" for="ID_sikokuSCKBox39"><input type="checkbox" id="ID_sikokuSCKBox39" name="sikokuSCKBox" value="39">高知</label></div>
+</div></div></div></td></tr>
+<tr>
+<td class="tarea"><div class="flex input"><div id="ID_eriacheckbox" name="eriacheckbox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox0" for="ID_kyusyu_OkinawSCKBox0"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox0" name="kyusyu_OkinawSCKBox" value="0">九州／沖縄</label></div>
+</div></div></div></td><td class="iew2"><div class="flex input"><div id="ID_kyusyu_OkinawSCKBox" name="kyusyu_OkinawSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox40" for="ID_kyusyu_OkinawSCKBox40"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox40" name="kyusyu_OkinawSCKBox" value="40">福岡</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox41" for="ID_kyusyu_OkinawSCKBox41"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox41" name="kyusyu_OkinawSCKBox" value="41">佐賀</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox42" for="ID_kyusyu_OkinawSCKBox42"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox42" name="kyusyu_OkinawSCKBox" value="42">長崎</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox43" for="ID_kyusyu_OkinawSCKBox43"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox43" name="kyusyu_OkinawSCKBox" value="43">熊本</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox44" for="ID_kyusyu_OkinawSCKBox44"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox44" name="kyusyu_OkinawSCKBox" value="44">大分</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox45" for="ID_kyusyu_OkinawSCKBox45"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox45" name="kyusyu_OkinawSCKBox" value="45">宮崎</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox46" for="ID_kyusyu_OkinawSCKBox46"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox46" name="kyusyu_OkinawSCKBox" value="46">鹿児島</label></div>
+<div class="checkbox"><label id="ID_Lkyusyu_OkinawSCKBox47" for="ID_kyusyu_OkinawSCKBox47"><input type="checkbox" id="ID_kyusyu_OkinawSCKBox47" name="kyusyu_OkinawSCKBox" value="47">沖縄</label></div>
+</div></div></div></td></tr>
+<tr>
+<th class="nowrap" scope="row">想定する分野<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td class="pt1" colspan="2"><div id="ID_souteiSuruBNYAArea" name="souteiSuruBNYAArea" class="assist_area"></div><div class="flex input"><input type="button" class="button" id="ID_Btn" name="Btn" onclick="openCodeAssist('4','8','souteiSuruBNYA','souteiSuruBNYAArea','1','','3','','','');" value="条件を追加" />
+</div></td></tr>
+<tr>
+<th scope="row">募集期間<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td colspan="2"><div class="mb05"><div>
+									※開始日が未入力の場合、本日の日付で検索を行います。
+									</div></div><div><div id="ID_boshuKikanSTANichi_UchiLabel" name="boshuKikanSTANichi_UchiLabel">開始日
+										<span class="restrict">半角数字</span>
+</div></div><div class="Input mt05 mb05"><div id="ID_boshuKikanSTA" name="boshuKikanSTA" class="flex input align_center mb03"><input type="text" id="ID_boshuKikanSTAYY" name="boshuKikanSTAYY" class="in_width_5to3_5em" maxlength="4" value="2026"><span class="fs08">年</span><select id="ID_boshuKikanSTAMM" name="boshuKikanSTAMM" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10" selected>10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select><span class="fs08">月</span><select  id="ID_boshuKikanSTADD" name="boshuKikanSTADD" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28" selected>28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select><span class="fs08">日</span><input type="text" value="" class="datepicker_ disp_none">
+</div></div><div class="flex Input"><div id="ID_boshuKikanENDNichi_UchiLabel" name="boshuKikanENDNichi_UchiLabel">終了日
+									<span class="restrict">半角数字</span>
+</div></div><div class="Input mt05"><div id="ID_boshuKikanEND" name="boshuKikanEND" class="flex input align_center mb03 mb0imp"><input type="text" id="ID_boshuKikanENDYY" name="boshuKikanENDYY" class="in_width_5to3_5em" maxlength="4" value=""><span class="fs08">年</span><select id="ID_boshuKikanENDMM" name="boshuKikanENDMM" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select><span class="fs08">月</span><select  id="ID_boshuKikanENDDD" name="boshuKikanENDDD" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select><span class="fs08">日</span><input type="text" value="" class="datepicker_ disp_none">
+</div></div></td></tr>
+<tr>
+<th scope="row">訓練期間<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td class="iew2" colspan="2"><div id="ID_kRNKikanCKBox" name="kRNKikanCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LkRNKikanCKBox1" for="ID_kRNKikanCKBox1"><input type="checkbox" id="ID_kRNKikanCKBox1" name="kRNKikanCKBox" value="1">１ヶ月以内</label></div>
+<div class="checkbox"><label id="ID_LkRNKikanCKBox2" for="ID_kRNKikanCKBox2"><input type="checkbox" id="ID_kRNKikanCKBox2" name="kRNKikanCKBox" value="2">２ヶ月</label></div>
+<div class="checkbox"><label id="ID_LkRNKikanCKBox3" for="ID_kRNKikanCKBox3"><input type="checkbox" id="ID_kRNKikanCKBox3" name="kRNKikanCKBox" value="3">３ヶ月</label></div>
+<div class="checkbox"><label id="ID_LkRNKikanCKBox4" for="ID_kRNKikanCKBox4"><input type="checkbox" id="ID_kRNKikanCKBox4" name="kRNKikanCKBox" value="4">４ヶ月&#xa0;～&#xa0;６ヶ月</label></div>
+<div class="checkbox"><label id="ID_LkRNKikanCKBox5" for="ID_kRNKikanCKBox5"><input type="checkbox" id="ID_kRNKikanCKBox5" name="kRNKikanCKBox" value="5">７ヶ月&#xa0;～&#xa0;１年未満</label></div>
+<div class="checkbox"><label id="ID_LkRNKikanCKBox6" for="ID_kRNKikanCKBox6"><input type="checkbox" id="ID_kRNKikanCKBox6" name="kRNKikanCKBox" value="6">１年以上</label></div>
+</div></div></td></tr>
+<tr class="id_free">
+<th scope="row">開講日<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td colspan="2"><div class="flex Input"><div id="ID_kaikouNichiENDNichi_UchiLabel" name="kaikouNichiENDNichi_UchiLabel">開始日
+										<span class="restrict">半角数字</span>
+</div></div><div class="Input mt05 mb05"><div id="ID_kaikounichiSTA" name="kaikounichiSTA" class="flex input align_center mb03"><input type="text" id="ID_kaikounichiSTAYY" name="kaikounichiSTAYY" class="in_width_5to3_5em" maxlength="4" value=""><span class="fs08">年</span><select id="ID_kaikounichiSTAMM" name="kaikounichiSTAMM" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select><span class="fs08">月</span><select  id="ID_kaikounichiSTADD" name="kaikounichiSTADD" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select><span class="fs08">日</span><input type="text" value="" class="datepicker_ disp_none">
+</div></div><div class="flex Input"><div id="ID_kaikouNichiENDNichi_UchiLabel" name="kaikouNichiENDNichi_UchiLabel">終了日
+									<span class="restrict">半角数字</span>
+</div></div><div class="Input mt05"><div id="ID_kaikounichiEND" name="kaikounichiEND" class="flex input align_center mb03 mb0imp"><input type="text" id="ID_kaikounichiENDYY" name="kaikounichiENDYY" class="in_width_5to3_5em" maxlength="4" value=""><span class="fs08">年</span><select id="ID_kaikounichiENDMM" name="kaikounichiENDMM" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select><span class="fs08">月</span><select  id="ID_kaikounichiENDDD" name="kaikounichiENDDD" class="in_width_5to4em">
+<option value="">&nbsp;</option>
+<option value="01">1</option>
+<option value="02">2</option>
+<option value="03">3</option>
+<option value="04">4</option>
+<option value="05">5</option>
+<option value="06">6</option>
+<option value="07">7</option>
+<option value="08">8</option>
+<option value="09">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+</select><span class="fs08">日</span><input type="text" value="" class="datepicker_ disp_none">
+</div></div></td></tr>
+<tr>
+<th scope="row">受講推奨者<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td class="iew2" colspan="2"><div class="flex input"><div id="ID_kRNSuishoSCKBox" name="kRNSuishoSCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LkRNSuishoSCKBox1" for="ID_kRNSuishoSCKBox1"><input type="checkbox" id="ID_kRNSuishoSCKBox1" name="kRNSuishoSCKBox" value="1">新規学校卒業者</label></div>
+<div class="checkbox"><label id="ID_LkRNSuishoSCKBox2" for="ID_kRNSuishoSCKBox2"><input type="checkbox" id="ID_kRNSuishoSCKBox2" name="kRNSuishoSCKBox" value="2">未就職の方</label></div>
+<div class="checkbox"><label id="ID_LkRNSuishoSCKBox3" for="ID_kRNSuishoSCKBox3"><input type="checkbox" id="ID_kRNSuishoSCKBox3" name="kRNSuishoSCKBox" value="3">障害のある方</label></div>
+<div class="checkbox"><label id="ID_LkRNSuishoSCKBox4" for="ID_kRNSuishoSCKBox4"><input type="checkbox" id="ID_kRNSuishoSCKBox4" name="kRNSuishoSCKBox" value="4">ひとり親家庭の方</label></div>
+<div class="checkbox"><label id="ID_LkRNSuishoSCKBox5" for="ID_kRNSuishoSCKBox5"><input type="checkbox" id="ID_kRNSuishoSCKBox5" name="kRNSuishoSCKBox" value="5">被災者の方</label></div>
+<div class="checkbox"><label id="ID_LkRNSuishoSCKBox6" for="ID_kRNSuishoSCKBox6"><input type="checkbox" id="ID_kRNSuishoSCKBox6" name="kRNSuishoSCKBox" value="6">外国人の方</label></div>
+</div></div></div></td></tr>
+<tr>
+<th scope="row">こだわり条件<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td class="iew2" colspan="2"><div class="flex input"><div><div id="ID_kodawariJKNCKBox" name="kodawariJKNCKBox" class="flex input align_center mb03 m0imp"><div class="flex input m0imp"><div class="checkbox"><label id="ID_LtankikanKRNCKBox1" for="ID_tankikanKRNCKBox1"><input type="checkbox" id="ID_tankikanKRNCKBox1" name="tankikanKRNCKBox" value="1">短時間訓練</label></div>
+<div class="checkbox"><label id="ID_LtJServiceAriCKBox1" for="ID_tJServiceAriCKBox1"><input type="checkbox" id="ID_tJServiceAriCKBox1" name="tJServiceAriCKBox" value="1">託児サービスあり</label></div>
+</div></div></div></div></td></tr>
+<tr>
+<th scope="row">フリーワード<span class="nes_label nes1 any">任意</span></th><td class="nes2"><span class="nes_label any">任意</span></td><td class="iew2 iew3" colspan="2"><div><div>
+									資格、訓練内容をフリーワードで検索できます。
+									<br><br>
+									空白で区切ることにより複数キーワードを指定できます。<br>
+									「OR検索」を利用した場合、入力したキーワードのいずれかを含む職業訓練情報を検索します。<br>
+									「AND検索」を利用した場合、入力したキーワード全てを含む職業訓練情報を検索します。<br>
+									「NOT検索」を利用した場合、入力したキーワードを含まない職業訓練情報を検索します。
+									</div></div><hr>
+<div class="flex input"><div><div id="ID_freeWordKNSKRadioBtn" name="freeWordKNSKRadioBtn" class="flex input align_center mb03 mb05"><div class="flex input m0imp"><div class="radio"><label id="ID_LfreeWordKNSKRadioBtn1" for="ID_freeWordKNSKRadioBtn1"><input type="radio" id="ID_freeWordKNSKRadioBtn1" name="freeWordKNSKRadioBtn" value="1" checked>ＯＲ検索</label></div>
+<div class="radio"><label id="ID_LfreeWordKNSKRadioBtn2" for="ID_freeWordKNSKRadioBtn2"><input type="radio" id="ID_freeWordKNSKRadioBtn2" name="freeWordKNSKRadioBtn" value="2">ＡＮＤ検索</label></div>
+</div></div><div id="ID_freeWordG" name="freeWordG" class="flex input align_center mb03"><div class="flex m0imp"><div class="m03"><div class="fb"><span class="restrict nolabel ">全角50文字以内</span></div><div><input type="text" class="in_width_30em mb0imp ml0imp" id="ID_freeWord" name="freeWord" maxlength="50" value=""></div></div>
+</div></div><hr>
+<div class="flex mb05">ＮＯＴ検索</div><div id="ID_nOTFreeWordG" name="nOTFreeWordG" class="flex input align_center mb03 mb0imp"><div class="flex m0imp"><div class="m03"><div class="fb"><span class="restrict nolabel ">全角50文字以内</span></div><div><input type="text" class="in_width_30em ml0imp" id="ID_nOTFreeWord" name="nOTFreeWord" maxlength="50" value=""><span>のぞく</span></div></div>
+</div></div></div></div></td></tr>
+<tr>
+<td colspan="5"><div class="flex jus_end jus_center_sd ml15"><input class="button button sub mb05 w_auto_btn m0imp" id="ID_searchBtnOpen" name="searchBtnOpen" type="button" value="詳しい検索条件を開く" />
+<input class="button button sub mb05 disp_none w_auto_btn m0imp" id="ID_searchBtnClose" name="searchBtnClose" type="button" value="詳しい検索条件を閉じる" />
+</div></td></tr>
+</table>
+<div class="flex jus_end jus_center_sd"><button class="button button sub" id="ID_clearBtn" name="clearBtn" type="button" value="検索条件をクリア">検索条件をクリア</button>
+<input class="button button main" id="ID_searchBtn" name="searchBtn" type="submit" value="検索" />
+</div><div class="m_h_0_5_sd width_auto max_width1088px_pc"><div id="ID_summary"></div><div class="flex align_end last_right mt05 ">
+<div class="mr03">
+<div class="m05"><span class="fb">48件</span>中&nbsp;31～48&nbsp;件を表示</div></div>
+
+<div class="flex align_center"><div class="mr03">
+<span class="fb">並び順</span>
+<div class="m05"><select id="ID_fwListNaviSortTop" name="fwListNaviSortTop">
+<option value="1" selected>募集開始日順</option>
+<option value="2">募集終了日順</option>
+<option value="3">開講日順</option>
+</select></div></div>
+<div class="mr03">
+<span class="fb">表示件数</span>
+<div class="m05"><select id="ID_fwListNaviDispTop" name="fwListNaviDispTop">
+<option value="10">10件</option>
+<option value="30" selected>30件</option>
+<option value="50">50件</option>
+</select></div></div>
+</div><div><ul class="flex page_navi"><li><input type="submit" name="fwListNaviBtnPrev" value="＜前へ"></li>
+<li><input type="submit" name="fwListNaviBtn1" value="1"></li><li><input type="submit" name="fwListNaviBtn2" value="2" disabled></li><li><input type="submit" name="fwListNaviBtnNext" value="次へ＞" disabled></li>
+</ul>
+</div></div>
+
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.31&#xa0;&#xa0;オフィスソフト・経理・総務・表計算マクロ／ＶＢＡ実務（飯田橋校３階）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>経理実務（簿記、決算、会計ソフト）、総務実務（社会保険、労務管理、給与計算、給与計算ソフト）などを身に付けるとともに、Ｗｏｒｄ、Ｅｘｃｅｌ、Ｅｘｃｅｌマクロ／ＶＢＡ、Ｐｏｗｅｒｐｏｉｎｔを実務に活用できる。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区揚場町２番１４号　新陽ビル３Ｆ&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0505" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.32&#xa0;&#xa0;オフィスソフト・経理・総務・表計算マクロ／ＶＢＡ実務（新宿校）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>経理実務（簿記、決算、会計ソフト）、総務実務（社会保険、労務管理、給与計算、給与計算ソフト）などを身に付けるとともに、Ｗｏｒｄ、Ｅｘｃｅｌ、Ｅｘｃｅｌマクロ／ＶＢＡ、Ｐｏｗｅｒｐｏｉｎｔを実務に活用できる。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都渋谷区千駄ヶ谷５丁目３０番１６号　東京工学院専門学校内&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0506" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.33&#xa0;&#xa0;おうちのデザイン・リノベーション（午後）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>ＡｕｔｏＣＡＤを使用した図面の製図、手描きやパースによる空間表現、リノベーション設計に必要な技術を習得する。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都豊島区南池袋２－６－１０プリモプラート４Ｆ&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0511" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.34&#xa0;&#xa0;生成ＡＩ活用　アプリ・ＷＥＢ・システムエンジニア養成（午後）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>Ｊａｖａによるシステム開発の基礎からサーバサイドまで、総合的なＷＥＢアプリケーション開発を習得。生成ＡＩを活用したコーディング支援の演習を含む。【ＩＴ資格】【企業実習促進】【ＤＳＳ対応】</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区西新宿七丁目８番１３号栗原ビル７Ｆ&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0515" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.35&#xa0;&#xa0;ネイリストマスター養成科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>学科・実技とも基本からサロンワークに必要なスキルまで身につきます。　サロンワーク模擬実習・トータルテクニック実習で接客マナーやカウンセリング力などコミュニケーション能力を育成します。　※企業実習の訓練開始・終了時間は異なる場合があります。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区西新宿７－９－７ニッカビル　４階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0521" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.36&#xa0;&#xa0;介護職員初任者・看護助手・福祉用具専門相談員養成科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>介護職員初任者として、ふさわしい知識と技能、福祉用具に関する専門知識及び福祉全般の基礎知識と相談援助技術を修得し、福祉現場等の就職先で即戦力となる人材を育成する。【職場見学等推進】※２０２７年３月１９日は９～１８時（８時間）の上級救命士訓練となります。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都三鷹市下連雀３－３８－４三鷹産業プラザ３階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0518" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.37&#xa0;&#xa0;生成ＡＩとＯｆｆｉｃｅ・ＶＢＡで学ぶ業務効率実践事務（午後）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>ＩＣＴリテラシー及び情報セキュリティに関する知識と、Ｗｏｒｄ、Ｅｘｃｅｌ、Ｅｘｃｅｌマクロを活用したオフィスワークに必要な技能を習得する。さらに、これらの技能を基礎とし、生成ＡＩやコミュニケーションツールの利用方法を学ぶ。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区西新宿七丁目８番１３号栗原ビル７Ｆ&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0516" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.38&#xa0;&#xa0;事務のためのＡＩ活用×Ｅｘｃｅｌ（マクロ・ＶＢＡ）×ＷＥＢサイト制作科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>Ｅｘｃｅｌ（マクロ・ＶＢＡ）による業務の効率化・自動化をはじめ、生成ＡＩを活用した汎用性の高い事務スキルを習得することができます。また、マーケティングやＷＥＢサイト更新に必要な基本知識を習得し、販促用サイト（ＬＰ）の画像差し替え・簡易修正などを含む、幅広いオフィス業務に対応できるスキルを身に付けます。【オンライン対応コース（ＰＣ貸出あり（無料））、オンライン割合８０％】</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区西新宿７－９－６寿ビル３Ｆ　３０１号室&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0509" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.39&#xa0;&#xa0;花の販売・デザイナー養成科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>花業界就職に向け、花卉知識や販売の仕組みを学び、アレンジメントスキルに関する知識及び、技能・技術を習得する。　２／１７の職場見学（大田花市場見学）は７：００～１０：００予定２／２２の職場見学（（株）東京堂見学）は１０：００～１３：００予定。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都中央区八丁堀２－３０－１７亀島橋ビル７階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0503" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.40&#xa0;&#xa0;ビジネスパソコン実用（教室２午前）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>最新のＭｉｃｒｏｓｏｆｔ　３６５（Ｗｏｒｄ、Ｅｘｃｅｌ、ＰｏｗｅｒＰｏｉｎｔ）を使って、ビジネスに必要なＰＣスキルを実践的に学びます。Ｗｏｒｄでは文書作成の基本と差込印刷を活用した個別データの自動挿入を学び、Ｅｘｃｅｌでは基本から応用までの関数（ＳＵＭ、ＩＦ、ＶＬＯＯＫＵＰ）やピボットテーブルを使ったデータ分析を習得します。ＰｏｗｅｒＰｏｉｎｔでは、効果的なグラフや視覚的にわかりやすいデザインで魅力的なプレゼン資料作成スキルを習得します。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区西新宿７－４－７イマス浜田ビル２階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0498" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">求職者支援訓練</span>
+<div class="flex"><div class="mt05">No.41&#xa0;&#xa0;エステ・アロマセラピスト養成科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>セラピストに必要な解剖生理学、皮膚生理学等の学科、ボディ、フェイシャルの技術、及び就職に必要な職業能力を習得するための訓練とする。１／７の職場見学は１０：００～１８：１０で実施。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集中</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2026年12月15日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都墨田区江東橋二丁目２番３号三和ビル３階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=01&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0527" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.42&#xa0;&#xa0;ＩＴエンジニア・サーバとネットワーク科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>昨今では企業における情報の交信に関心が高まっています。その中で渇望されている技能が「ネットワーク技術」「サーバ技術」そして最も関心の高いのが「セキュリティ技術」です。当講座では「ネットワークとサーバ構築の技術」と「情報セキュリティマネジメント」（国家試験）の習得目指し基礎から学習します。演習の時間では実機を使用し実践的な構築を行い技能を深めより良い就職に繋げます。シスコ製実機をチームで使用、課題に基づき実際にネットワークの設定と動作確認を行います。実践的に学習し就職に繋げます。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>文京区本郷３－２２－５住友不動産本郷ビル１２階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0528" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.43&#xa0;&#xa0;ＩＴ基礎・ＡＩ活用Ｗｅｂ／ＳＮＳマーケ（オンライン）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>非エンジニア向けにＩＴ全般の基礎知識とＡＩを活用したＷｅｂ・ＳＮＳマーケティングを学び、職種を問わず業務改善やＳＮＳ含情報発信に活かせる実践的なデジタル活用力を身に付けます。加えて、著作権の基礎知識を習得し、法的リスクを回避しながらＳＮＳ運営等企業情報の発信他ＤＸスキルを習得することで、事務職や営業職などＩＴ以外の職種でもデジタル領域を理解し活躍できる人材を目指します。国家資格を持つキャリアコンサルタントが就活をサポートいたします。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>港区新橋四丁目１番１号新虎通りＣＯＲＥ&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0529" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.44&#xa0;&#xa0;生成ＡＩ活用・ＷＥＢクリエイター科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>ＰｈｏｔｏｓｈｏｐやＩｌｌｕｓｔｒａｔｏｒ等のツール活用し画像の編集やバナー作成方法を身に付け、ＨＴＭＬやＣＳＳ、ＪａｖａＳｃｒｉｐｔを利用した動きあるホームページなどを作成、サーバーにアップロードする迄を、実務に則した内容で学びます。ホームページ作成に必要になる度にバナーや画像を作っていくので、パソコンに不安のある方もじっくり学ぶ事ができます。スマートフォンで仕上がり確認。ポートフォリオ（作品集）を授業中に作成、未経験でもＩＴのお仕事に就くこと可能。常駐スタッフが内定まで親切丁寧にサポート。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都豊島区南池袋２－１２－９ＫＫビル４階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0530" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.45&#xa0;&#xa0;Ｗｅｂデザイン＆ＡＩ活用プログラミング科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>「生成ＡＩやデザインツールを使ってみたい」「仕事に活かせるスキルを身に付けたい」初心者向け講座。ＡＩの活用方法やデザイン基礎から、Ｗｅｂサイトや簡単なアプリ制作まで幅広く学びます。ＩＴを初めて学ぶ方やデジタルスキルに自信がない方も、身近なツールから一歩ずつ学べるカリキュラム。事務・営業・販売・広報など、幅広い仕事に役立つスキルの習得を目指します。修了後は、幅広い職種で生成ＡＩやデジタルツールを活用し、業務の効率化や情報発信、課題解決に取り組みながら、自ら考えアイデアを形にできる人材を目指します。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都中野区東中野４－２－３&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0524" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.46&#xa0;&#xa0;ＡＩ活用Ｗｅｂアプリ制作実践（オンライン）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>Ｐｙｔｈｏｎを用いたＷｅｂアプリケーション開発を中心に、プログラミングの基礎から実践までを学ぶコース。ＨＴＭＬ・ＣＳＳ、ＪａｖａＳｃｒｉｐｔ、ＳＱＬ、Ｄｊａｎｇｏに加え、Ｇｉｔ、Ｌｉｎｕｘ、Ｄｏｃｋｅｒなど開発現場で活用される技術を習得します。ＡＩを開発支援ツールとして活用しながら、オリジナルＷｅｂアプリを制作し、開発力を身に付け、ＩＴ系企業への就職を目指します。キャリアコンサルタントから就職活動を想定した応募書類対策、面接対策、その他相談事に対するアドバイスなど随時対応。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区西新宿７－４－４武蔵ビル２階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0525" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.47&#xa0;&#xa0;Ｗｅｂデザイナーエキスパート（オンライン）科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>Ｗｅｂサイト制作・運営管理ができる即戦力を目指し、コーディングとデザインスキルを習得します。加えて多くの企業で導入されているＷｏｒｄｐｒｅｓｓや、作業効率化のため最新のＦｉｇｍａも取りいれたカリキュラムで実践力を養います。最終的には卒業制作として就職活動のためポートフォリオを制作します。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>東京都新宿区愛住町２２第３山田ビル&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0526" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<table class="kyujin mt2">
+<tr class="kyujin_head">
+<td><span class="nes_label any">公共職業訓練</span>
+<div class="flex"><div class="mt05">No.48&#xa0;&#xa0;Ｗｅｂ＆オフィススペシャリスト養成科</div>
+</div></td></tr>
+<tr class="kyujin_body">
+<td><div class="flex flex_top_sa mb1"><div class="left-side"><table class="noborder">
+<tr class="border_new">
+<td><div class="fb in_width_11em" id="ID_kRNNY_UchiLabel" name="kRNNY_UchiLabel">訓練内容</div><div>Ｍｉｃｒｏｓｏｆｔ　Ｏｆｆｉｃｅの操作を一通り学習し、３科目（Ｗｏｒｄ・Ｅｘｃｅｌ・ＰｏｗｅｒＰｏｉｎｔ）のＭＯＳ対策に加え、Ｅｘｃｅｌについては上級資格であるエキスパートの対策まで網羅することで転職活動を有利にします。業務効率化においてニーズの高いＥｘｃｅｌ関数のテクニックを実務的な題材で演習し、さらにホームページの簡易的な更新作業の方法を知り、実践力を強化します。就職支援担当者常駐。訓練期間中から修了後３か月間にわたり、履歴書や職務経歴書添削、面接対策等サポートを行います。</div>
+</td></tr>
+</table>
+</div><div class="right-side"><table class="noborder">
+<tr class="border_new">
+<td class="fb in_width_11em">募集状況</td><td><div>募集前</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">開講日</td><td><div>2027年1月4日</div>
+</td></tr>
+<tr class="border_new">
+<td class="fb in_width_11em">訓練実施会場所在地</td><td><div>新宿区歌舞伎町２－４６－５ＫＭ新宿ビル７階&#xa0;&#xa0;</div>
+</td></tr>
+</table>
+</div></div></td></tr>
+<tr class="kyujin_foot">
+<td><div class="flex last_right"><div class="flex align_center"><a id="ID_dispDetailBtn" class="button main pull_right m05 shadowed" href="./GECA150010.do?screenId=GECA150010&amp;action=dispDetailBtn&amp;kRNShubetsu_Detail=03&amp;shinseiNendo_Detail=08&amp;tDFKNo_Detail=13&amp;kRNTsuban_Detail=0527" target="_blank">
+														詳細を表示
+													</a></div></div></td></tr>
+</table>
+<hr>
+<div class="flex align_end last_right mt05 ">
+<div class="mr03">
+<div class="m05"><span class="fb">48件</span>中&nbsp;31～48&nbsp;件を表示</div></div>
+
+<div class="flex align_center"><div class="mr03">
+<span class="fb">並び順</span>
+<div class="m05"><select id="ID_fwListNaviSortBtm" name="fwListNaviSortBtm">
+<option value="1" selected>募集開始日順</option>
+<option value="2">募集終了日順</option>
+<option value="3">開講日順</option>
+</select></div></div>
+<div class="mr03">
+<span class="fb">表示件数</span>
+<div class="m05"><select id="ID_fwListNaviDispBtm" name="fwListNaviDispBtm">
+<option value="10">10件</option>
+<option value="30" selected>30件</option>
+<option value="50">50件</option>
+</select></div></div>
+</div><div><ul class="flex page_navi"><li><input type="submit" name="fwListNaviBtnPrev" value="＜前へ"></li>
+<li><input type="submit" name="fwListNaviBtn1" value="1"></li><li><input type="submit" name="fwListNaviBtn2" value="2" disabled></li><li><input type="submit" name="fwListNaviBtnNext" value="次へ＞" disabled></li>
+</ul>
+</div></div>
+<input type="hidden" name="fwListNowPage" value="2">
+<input type="hidden" name="fwListLeftPage" value="1">
+<input type="hidden" name="fwListNaviCount" value="3">
+<input type="hidden" name="fwListNaviDisp" value="30">
+<input type="hidden" name="fwListNaviSort" value="1">
+
+</div><input type="hidden" id="ID_searchDisp" name="searchDisp" value="0">
+<input type="hidden" id="ID_summaryDisp" name="summaryDisp" value="true">
+<input type="hidden" id="ID_souteiSuruBNYA" name="souteiSuruBNYA" value="">
+<input type="hidden" id="ID_screenId" name="screenId" value="GECA150010">
+<input type="hidden" id="ID_action" name="action" value="">
+<input type="hidden" id="ID_codeAssistType" name="codeAssistType" value="">
+<input type="hidden" id="ID_codeAssistKind" name="codeAssistKind" value="">
+<input type="hidden" id="ID_codeAssistCode" name="codeAssistCode" value="">
+<input type="hidden" id="ID_codeAssistItemCode" name="codeAssistItemCode" value="">
+<input type="hidden" id="ID_codeAssistItemName" name="codeAssistItemName" value="">
+<input type="hidden" id="ID_codeAssistDivide" name="codeAssistDivide" value="">
+<input type="hidden" id="ID_maba_vrbs" name="maba_vrbs" value="searchBtn, dispDetailBtn, prevLink, pageChgLink, nextLink">
+<input type="hidden" id="ID_preCheckFlg" name="preCheckFlg" value="false">
+</form>
+</div>
+
+<footer>
+	<p class="pagetop" style="display: block;"><a href="#all"><i class="fa fa-2x fa-chevron-up"></i><br>ページ<br>最上部へ</a></p>
+	<hr>
+	<div class="footer_navi">
+		<p class="m_side_auto">
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/link.html">リンク集</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/sitemap.html">サイトマップ</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/sitepolicy.html">サイトポリシー</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/privacypolicy.html">プライバシーポリシー</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/terms.html">利用規約</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/help/question.html">よくあるご質問</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/contact.html">お問い合わせ先</a>
+			｜
+			<a href="https://www.hellowork.mhlw.go.jp/info/location_list.html">所在地情報</a>
+			｜
+		</p>
+		<p class="m_side_auto footer_copyright" id="bottom">All rights reserved, Copyright (C) Employment Security Bureau,Ministry of Health, Labour and Welfare</p>
+	</div>
+</footer></div>
+<script src="jsp/js/jquery/jquery-3.6.3.min.js"></script>
+<script src="jsp/js/jquery/jquery-ui.js"></script>
+<script src="jsp/js/common.js"></script>
+<script src="jsp/js/AssistCode.js"></script>
+
+<script src="jsp/js/ECA150/ECA150.js"></script>
+</body>
+</html>
