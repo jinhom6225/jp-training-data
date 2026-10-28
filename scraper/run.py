@@ -2,9 +2,10 @@
 
     python -m scraper.run [--mode auto|normal|full] [--out out]
                           [--pages-url URL] [--cache DIR [--from-cache]]
-                          [--prefs 13,27] [--force-anomaly]
+                          [--prefs 13,27] [--force-anomaly] [--bootstrap]
 
-1. Download the previous site from Pages (none → first run → full).
+1. Download the previous site from Pages. Missing or unreadable is an
+   anomaly, except with --bootstrap (the first publish) → full run.
 2. Search the list of every prefecture, then the 託児サービスあり list.
 3. Fetch details: every course (full: first run, Wednesday JST mornings,
    or --mode full) or only new / changed / near-deadline ones (normal),
@@ -39,7 +40,7 @@ from scraper.assemble import assemble, detail_targets
 from scraper.collect import Cache, collect_childcare, collect_lists, fetch_details
 from scraper.errors import BlockedError
 from scraper.hwis_client import HwisClient, RequestsTransport
-from scraper.publish import Previous, load_previous, write_site
+from scraper.publish import Previous, PreviousUnreadable, load_previous, write_site
 from scraper.rules import PREF_CODES
 
 log = logging.getLogger("scraper.run")
@@ -57,6 +58,7 @@ class Config:
     cache: Path | None
     from_cache: bool
     force_anomaly: bool
+    bootstrap: bool = False
     prefs: tuple[str, ...] = PREF_CODES
     overrides_path: Path = overrides.DEFAULT_PATH
 
@@ -122,9 +124,36 @@ def _write_report(out: Path, report: dict) -> None:
     (out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+class PagesFetchError(Exception):
+    """The previous Pages file answered neither 200 nor 404."""
+
+
+def _load_comparison_base(config: Config, deps: Deps, started: datetime) -> tuple[Previous | None, str | None]:
+    """The previous publish, or the anomaly reason that forbids running
+    without one. Only a bootstrap run (the very first publish, started by
+    hand) may go on without a readable previous site (review M3)."""
+    try:
+        previous = load_previous(config.pages_url, deps.fetch, now=started)
+    except PreviousUnreadable as error:
+        if not config.bootstrap:
+            return None, f"previous publish unreadable ({error}); fix it or run collect once with mode=bootstrap"
+        log.warning("bootstrap: ignoring the unreadable previous publish (%s)", error)
+        return None, None
+    if previous is None and not config.bootstrap:
+        return None, f"no previous publish at {config.pages_url or '(no Pages URL)'}; run collect once with mode=bootstrap"
+    if previous is not None and previous.missing and not config.bootstrap:
+        return None, f"previous pref files unreadable: {', '.join(previous.missing)}; run collect once with mode=bootstrap"
+    return previous, None
+
+
 def _collect(config: Config, deps: Deps, started: datetime, report: dict) -> int:
     today = started.date()
-    previous = load_previous(config.pages_url, deps.fetch, now=started)
+    report["bootstrap"] = config.bootstrap
+    previous, refusal = _load_comparison_base(config, deps, started)
+    if refusal is not None:
+        report["anomalies"] = [refusal]
+        deps.notify("jp-training-data anomaly, nothing published:\n- " + refusal)
+        return EXIT_ANOMALY
     mode = resolve_mode(config.mode, previous, started)
     report["mode"] = mode
     log.info("mode %s (previous publish: %s)", mode, previous.generated_at if previous else "none")
@@ -190,10 +219,14 @@ def execute(config: Config, deps: Deps) -> int:
 
 
 def _fetch_url(url: str) -> bytes | None:
+    """A previous Pages file: None only for 404 (not published); any other
+    status, redirects included, fails the run instead of looking like a
+    first run (review M2)."""
     response = requests.get(url, timeout=20, allow_redirects=False)
     if response.status_code == 404:
         return None
-    response.raise_for_status()
+    if response.status_code != 200:
+        raise PagesFetchError(f"{url} answered HTTP {response.status_code}")
     return response.content
 
 
@@ -217,12 +250,16 @@ def parse_args(argv: list[str] | None) -> Config:
     parser.add_argument("--cache", type=Path, default=None)
     parser.add_argument("--from-cache", action="store_true")
     parser.add_argument("--force-anomaly", action="store_true")
+    parser.add_argument(
+        "--bootstrap", action="store_true",
+        help="first publish only: allow a missing or unreadable previous site",
+    )
     parser.add_argument("--prefs", type=_prefs, default=PREF_CODES)
     parser.add_argument("--overrides", type=Path, default=overrides.DEFAULT_PATH)
     args = parser.parse_args(argv)
     return Config(
         mode=args.mode, out=args.out, pages_url=args.pages_url, cache=args.cache,
-        from_cache=args.from_cache, force_anomaly=args.force_anomaly, prefs=args.prefs,
+        from_cache=args.from_cache, force_anomaly=args.force_anomaly, bootstrap=args.bootstrap, prefs=args.prefs,
         overrides_path=args.overrides,
     )
 

@@ -32,6 +32,14 @@ def test_telegram_without_secrets_only_logs(caplog: pytest.LogCaptureFixture) ->
     assert "hello" in caplog.text
 
 
+def test_missing_secrets_warn_and_annotate_in_actions(caplog: pytest.LogCaptureFixture, capsys) -> None:
+    assert telegram.send("hi", env={"GITHUB_ACTIONS": "true"}, post=lambda *a, **k: None) is False
+    assert any(r.levelno == logging.WARNING and "secrets" in r.getMessage() for r in caplog.records)
+    assert "::warning::" in capsys.readouterr().out
+    telegram.send("hi", env={}, post=lambda *a, **k: None)
+    assert "::warning::" not in capsys.readouterr().out
+
+
 def test_telegram_sends_with_secrets() -> None:
     calls = []
 
@@ -139,4 +147,7 @@ def test_load_previous_first_run_and_bad_files(tmp_path: Path) -> None:
 
 
 def test_load_previous_with_broken_meta() -> None:
-    assert publish.load_previous("https://x/", lambda url: b"[]", now=NOW) is None
+    with pytest.raises(publish.PreviousUnreadable):
+        publish.load_previous("https://x/", lambda url: b"[]", now=NOW)
+    with pytest.raises(publish.PreviousUnreadable):
+        publish.load_previous("https://x/", lambda url: b"\xff{", now=NOW)

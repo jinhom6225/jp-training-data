@@ -1,7 +1,8 @@
 """Telegram notices for anomalies and failures (research §3.1-5).
 
-Uses ``TELEGRAM_BOT_TOKEN`` and ``TELEGRAM_CHAT_ID``. Without them (local
-runs) the message is only logged. Sending never raises and never logs the
+Uses ``TELEGRAM_BOT_TOKEN`` and ``TELEGRAM_CHAT_ID``. Without them the
+message is logged as a warning (and annotated on the Actions run page) but
+nothing fails, so local runs work. Sending never raises and never logs the
 token.
 """
 
@@ -29,7 +30,10 @@ def send(
     chat_id = env.get("TELEGRAM_CHAT_ID", "").strip()
     body = text if len(text) <= MAX_LENGTH else text[: MAX_LENGTH - 1] + "…"
     if not token or not chat_id:
-        log.info("telegram disabled (no secrets); message: %s", body)
+        log.warning("telegram secrets missing, notice not sent: %s", body)
+        if env.get("GITHUB_ACTIONS") == "true":
+            # Shows as a warning on the Actions run page, not only in the log.
+            print("::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not set; Telegram notices are off")
         return False
     try:
         response = post(

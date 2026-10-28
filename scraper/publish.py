@@ -27,6 +27,10 @@ class PublishError(Exception):
     """A file would break the app's rules; nothing was written."""
 
 
+class PreviousUnreadable(Exception):
+    """The previous meta.json exists but cannot be read or breaks the rules."""
+
+
 @dataclass(frozen=True)
 class Previous:
     """The last published site."""
@@ -87,11 +91,13 @@ def write_site(out: Path, courses: dict[str, list[dict]], *, generated_at: datet
 
 
 def load_previous(base_url: str, fetch: Callable[[str], bytes | None], *, now: datetime) -> Previous | None:
-    """The last published site at ``base_url``, or None on a first run.
+    """The last published site at ``base_url``; None when there is no
+    meta.json (nothing published yet); ``PreviousUnreadable`` when meta.json
+    is there but broken.
 
     A pref file that is missing or breaks the rules is listed in
-    ``missing`` (its count still comes from meta) so the run treats its
-    courses as unknown instead of comparing with bad data."""
+    ``missing`` (its count still comes from meta); the run decides what that
+    means (an anomaly unless bootstrapping)."""
     if not base_url:
         return None
     base = base_url.rstrip("/") + "/"
@@ -100,8 +106,9 @@ def load_previous(base_url: str, fetch: Callable[[str], bytes | None], *, now: d
         return None
     check_now = now.astimezone(timezone.utc)
     meta_text = meta_bytes.decode("utf-8", errors="replace")
-    if validate_meta_text(meta_text, now=check_now):
-        return None
+    problems = validate_meta_text(meta_text, now=check_now)
+    if problems:
+        raise PreviousUnreadable(f"previous meta.json: {'; '.join(problems[:3])}")
     meta = json.loads(meta_text)
     counts = {code: entry["count"] for code, entry in meta["prefs"].items()}
     courses: dict[str, list[dict]] = {}

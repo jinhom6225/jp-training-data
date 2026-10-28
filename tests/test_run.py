@@ -40,7 +40,7 @@ class Harness:
 
     def config(self, **changes) -> run.Config:
         values = dict(mode="auto", out=self.tmp / "out", pages_url="https://pages.test/data/",
-                      cache=None, from_cache=False, force_anomaly=False, prefs=("13", "31"),
+                      cache=None, from_cache=False, force_anomaly=False, bootstrap=True, prefs=("13", "31"),
                       overrides_path=self.tmp / "none.json")
         values.update(changes)
         return run.Config(**values)
@@ -190,7 +190,8 @@ def test_parse_args_and_main(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) ->
         run.parse_args(["--prefs", "48"])
     h = Harness(tmp_path)
     monkeypatch.setattr(run, "real_deps", lambda config: h.deps())
-    assert run.main(["--out", str(tmp_path / "o"), "--prefs", "13", "--pages-url", ""]) == 0
+    assert run.main(["--out", str(tmp_path / "o"), "--prefs", "13", "--pages-url", ""]) == run.EXIT_ANOMALY
+    assert run.main(["--out", str(tmp_path / "o"), "--prefs", "13", "--pages-url", "", "--bootstrap"]) == 0
 
 
 def test_unexpected_error_notifies(tmp_path: Path) -> None:
@@ -203,3 +204,67 @@ def test_unexpected_error_notifies(tmp_path: Path) -> None:
     deps = run.Deps(client=deps.client, fetch=broken, notify=deps.notify, now=deps.now)
     assert run.execute(h.config(), deps) == run.EXIT_ERROR
     assert "boom" in h.notices[-1]
+
+
+def test_no_previous_without_bootstrap_is_an_anomaly(tmp_path: Path) -> None:
+    h = Harness(tmp_path)
+    assert run.execute(h.config(bootstrap=False), h.deps()) == run.EXIT_ANOMALY
+    assert "bootstrap" in h.notices[-1]
+    assert not (tmp_path / "out" / "site" / "meta.json").exists()
+    assert h.details_fetched() == 0
+
+
+def test_unreadable_previous_meta_is_an_anomaly_unless_bootstrapping(tmp_path: Path) -> None:
+    h = Harness(tmp_path)
+    h.published["https://pages.test/data/meta.json"] = b"{not json"
+    assert run.execute(h.config(bootstrap=False), h.deps()) == run.EXIT_ANOMALY
+    assert "unreadable" in h.notices[-1]
+    assert run.execute(h.config(bootstrap=True), h.deps()) == 0
+    assert read(tmp_path / "out" / "report.json")["mode"] == "full"
+
+
+def test_missing_previous_pref_file_is_an_anomaly(tmp_path: Path) -> None:
+    h = Harness(tmp_path)
+    assert run.execute(h.config(), h.deps()) == 0
+    h.publish_out()
+    del h.published["https://pages.test/data/pref/13.json"]
+    assert run.execute(h.config(bootstrap=False), h.deps()) == run.EXIT_ANOMALY
+    assert "13" in h.notices[-1]
+
+
+def test_scheduled_style_run_with_previous_needs_no_bootstrap(tmp_path: Path) -> None:
+    h = Harness(tmp_path)
+    assert run.execute(h.config(), h.deps()) == 0
+    h.publish_out()
+    assert run.execute(h.config(bootstrap=False), h.deps()) == 0
+
+
+class _PagesResponse:
+    def __init__(self, status: int, body: bytes = b"") -> None:
+        self.status_code = status
+        self.content = body
+
+
+@pytest.mark.parametrize(("status", "expected"), [(200, b"{}"), (404, None)])
+def test_fetch_url_ok_and_not_found(monkeypatch: pytest.MonkeyPatch, status: int, expected) -> None:
+    calls = {}
+
+    def get(url, **kwargs):
+        calls.update(kwargs)
+        return _PagesResponse(status, b"{}")
+
+    monkeypatch.setattr(run.requests, "get", get)
+    assert run._fetch_url("https://x/meta.json") == expected
+    assert calls["allow_redirects"] is False
+
+
+@pytest.mark.parametrize("status", [301, 302, 304, 403, 500, 503])
+def test_fetch_url_other_statuses_fail_the_run(monkeypatch: pytest.MonkeyPatch, status: int) -> None:
+    monkeypatch.setattr(run.requests, "get", lambda url, **kwargs: _PagesResponse(status))
+    with pytest.raises(run.PagesFetchError, match=str(status)):
+        run._fetch_url("https://x/meta.json")
+
+
+def test_parse_args_bootstrap() -> None:
+    assert run.parse_args(["--bootstrap"]).bootstrap is True
+    assert run.parse_args([]).bootstrap is False
