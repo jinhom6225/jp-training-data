@@ -877,7 +877,7 @@
     ]
    ],
    "ok": false,
-   "note": "more than 5"
+   "note": "more than 5 (also trips the ascending rule: six nos cannot fit in 1-5; the count limit itself is pinned by the Dart validator test)"
   }
  ],
  "bases": {
