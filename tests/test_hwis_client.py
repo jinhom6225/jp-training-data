@@ -144,3 +144,71 @@ def test_min_interval_cannot_go_below_policy() -> None:
     clock = FakeClock()
     with pytest.raises(ValueError):
         HwisClient(FakeTransport(clock, ok), min_interval=1.0)
+
+
+class _Response:
+    def __init__(self, chunks: list[bytes], status: int = 200, length: str | None = None) -> None:
+        self._chunks = chunks
+        self.status_code = status
+        self.headers = {} if length is None else {"Content-Length": length}
+        self.closed = False
+
+    def iter_content(self, chunk_size: int):
+        yield from self._chunks
+
+    def close(self) -> None:
+        self.closed = True
+
+
+def _transport(monkeypatch: pytest.MonkeyPatch, response: _Response):
+    import requests
+
+    from scraper.hwis_client import RequestsTransport
+
+    seen = {}
+
+    def fake(*args, **kwargs):
+        seen.update(kwargs)
+        return response
+
+    monkeypatch.setattr(requests, "request", fake)
+    transport = RequestsTransport(max_bytes=10)
+    monkeypatch.setattr(transport._session, "request", fake)
+    return transport, seen
+
+
+@pytest.mark.parametrize("cookies", [True, False])
+def test_transport_streams_small_bodies(monkeypatch: pytest.MonkeyPatch, cookies: bool) -> None:
+    response = _Response([b"abc", b"def"])
+    transport, seen = _transport(monkeypatch, response)
+    status, body = transport.send("GET", BASE_URL, params=None, data=None, use_cookies=cookies, timeout=1, headers={})
+    assert (status, body) == (200, b"abcdef")
+    assert seen["stream"] is True and seen["allow_redirects"] is False
+    assert response.closed
+
+
+def test_transport_rejects_a_large_declared_body(monkeypatch: pytest.MonkeyPatch) -> None:
+    transport, _ = _transport(monkeypatch, _Response([b"x"], length="11"))
+    with pytest.raises(FetchError, match="bytes"):
+        transport.send("GET", BASE_URL, params=None, data=None, use_cookies=False, timeout=1, headers={})
+
+
+def test_transport_rejects_a_large_streamed_body(monkeypatch: pytest.MonkeyPatch) -> None:
+    response = _Response([b"123456", b"789012"])
+    transport, _ = _transport(monkeypatch, response)
+    with pytest.raises(FetchError, match="bytes"):
+        transport.send("GET", BASE_URL, params=None, data=None, use_cookies=False, timeout=1, headers={})
+    assert response.closed
+
+
+def test_oversized_body_is_not_retried() -> None:
+    client, transport, _ = make(lambda _: FetchError("body over 5 MB"))
+    with pytest.raises(FetchError):
+        client.detail("02-08-13-0504")
+    assert len(transport.calls) == 1
+
+
+def test_default_cap_is_five_megabytes() -> None:
+    from scraper.hwis_client import MAX_RESPONSE_BYTES
+
+    assert MAX_RESPONSE_BYTES == 5 * 1024 * 1024

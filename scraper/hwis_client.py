@@ -27,6 +27,9 @@ USER_AGENT = (
 )
 MIN_INTERVAL = 1.5
 TIMEOUT = 20.0
+# HWIS pages are 5-100 KB; anything this large is not a page we can use.
+MAX_RESPONSE_BYTES = 5 * 1024 * 1024
+_CHUNK = 64 * 1024
 _COURSE_ID = re.compile(r"([0-9]{2})-([0-9]{2})-([0-9]{2})-([0-9]{4})")
 _BLOCKED = (403, 429)
 
@@ -55,10 +58,13 @@ class Transport(Protocol):
 
 class RequestsTransport:
     """``requests`` transport: one cookie session for searches, a fresh
-    cookie-less request for details. Redirects are not followed."""
+    cookie-less request for details. Redirects are not followed, and the
+    body is streamed with a size cap (``FetchError`` when exceeded; not
+    retried)."""
 
-    def __init__(self) -> None:
+    def __init__(self, max_bytes: int = MAX_RESPONSE_BYTES) -> None:
         self._session = requests.Session()
+        self._max_bytes = max_bytes
 
     def send(
         self,
@@ -71,18 +77,31 @@ class RequestsTransport:
         timeout: float,
         headers: dict[str, str],
     ) -> tuple[int, bytes]:
+        call = self._session.request if use_cookies else requests.request
         try:
-            if use_cookies:
-                response = self._session.request(
-                    method, url, params=params, data=data, timeout=timeout, headers=headers, allow_redirects=False
-                )
-            else:
-                response = requests.request(
-                    method, url, params=params, data=data, timeout=timeout, headers=headers, allow_redirects=False
-                )
+            response = call(
+                method, url, params=params, data=data, timeout=timeout, headers=headers,
+                allow_redirects=False, stream=True,
+            )
         except (requests.Timeout, requests.ConnectionError) as error:
             raise TransportError(str(error)) from error
-        return response.status_code, response.content
+        try:
+            return response.status_code, self._read(response)
+        except (requests.Timeout, requests.ConnectionError) as error:
+            raise TransportError(str(error)) from error
+        finally:
+            response.close()
+
+    def _read(self, response: requests.Response) -> bytes:
+        declared = response.headers.get("Content-Length", "")
+        if declared.isdigit() and int(declared) > self._max_bytes:
+            raise FetchError(f"response of {declared} bytes over {self._max_bytes} bytes")
+        body = bytearray()
+        for chunk in response.iter_content(chunk_size=_CHUNK):
+            body.extend(chunk)
+            if len(body) > self._max_bytes:
+                raise FetchError(f"response over {self._max_bytes} bytes")
+        return bytes(body)
 
     def reset_cookies(self) -> None:
         self._session.cookies.clear()
