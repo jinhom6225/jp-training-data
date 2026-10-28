@@ -1,7 +1,9 @@
 """Every case of the shared rule file (plan D8), the same cases the app's
-Dart tests assert (test/data/rule_cases_test.dart, url_rules_test.dart,
-start_push_message_test.dart). If one fails, the pipeline and the app
-disagree and the app would reject a whole pref file."""
+Dart tests assert (test/data/rule_cases_test.dart, url_rules_test.dart).
+If one fails, the pipeline and the app disagree and the app would reject a
+whole pref file. The ``pushNames`` section belongs to the app's push
+payload; the pipeline sends no push (FCM dropped 2026-10-28), so that
+section is only kept in the synced copy."""
 
 from __future__ import annotations
 
@@ -27,7 +29,7 @@ def test_every_section_is_present() -> None:
     for name in [
         "hosts", "phones", "dates", "dateTimes", "entryMonths", "courseIds",
         "fieldIds", "texts", "rounds", "bases", "originFields", "lengths",
-        "instantsAhead", "pushNames",
+        "instantsAhead",
     ]:
         assert CASES.get(name), name
 
@@ -132,8 +134,3 @@ def test_instants_ahead(item: dict[str, Any]) -> None:
     now = validate.parse_iso_instant(item["now"])
     assert value is not None and now is not None
     assert (not validate.is_too_far_ahead(value, now)) is item["ok"]
-
-
-@pytest.mark.parametrize("item", CASES["pushNames"], ids=_ids(CASES["pushNames"]))
-def test_push_names(item: dict[str, Any]) -> None:
-    assert validate.push_name_ok(item["value"]) is item["ok"]

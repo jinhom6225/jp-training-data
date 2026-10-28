@@ -41,7 +41,6 @@ from scraper.rules import (  # noqa: F401  (re-exported for callers and tests)
     parse_iso_date,
     parse_iso_instant,
     phone_ok,
-    push_name_ok,
     round_problems,
     text_ok,
     url_scheme,

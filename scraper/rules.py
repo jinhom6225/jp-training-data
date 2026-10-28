@@ -7,9 +7,7 @@ that matter here, so every pattern below:
 
 - spells digits as ``[0-9]`` (Python's ``\\d`` also matches full-width digits);
 - is applied with ``re.fullmatch`` (Python's ``$`` also matches before a
-  trailing newline);
-- uses ``re.ASCII`` where the Dart pattern relies on ``\\b`` (Dart's word
-  boundary is ASCII-only).
+  trailing newline).
 """
 
 from __future__ import annotations
@@ -53,7 +51,6 @@ MAX_FIELDS_PER_COURSE = 8
 MAX_TARGET_COURSES = 20
 MAX_CAPACITY = 999
 MAX_FUTURE_SKEW = timedelta(days=7)
-MAX_PUSH_NAME_LENGTH = 40
 
 PREF_CODES: tuple[str, ...] = tuple(f"{i:02d}" for i in range(1, 48))
 
@@ -242,28 +239,3 @@ def round_problems(rounds: list[Round]) -> list[str]:
             problems.append(f"rounds[{i}]: goes back from round {previous.no}")
         previous = current
     return problems
-
-
-# --- Push names (start_push_message.dart pushNameOk) --------------------------
-
-_LINK_LIKE = re.compile(
-    r"://|www\.|@|[A-Za-z0-9-]+\.(jp|com|net|org|info|biz|io|co)\b",
-    re.IGNORECASE | re.ASCII,
-)
-_PHONE_LIKE = re.compile(
-    r"[0-9]{2,4}[-‐ーｰ－][0-9]{2,4}[-‐ーｰ－][0-9]{3,4}|[0-9]{6,}",
-    re.ASCII,
-)
-
-
-def push_name_ok(name: str) -> bool:
-    """A name a push may carry: 1-40 UTF-16 units of plain text with no URL,
-    mail address, domain or phone-like digits."""
-    return (
-        name.strip() != ""
-        and utf16_len(name) <= MAX_PUSH_NAME_LENGTH
-        and text_ok(name)
-        and "\n" not in name
-        and _LINK_LIKE.search(name) is None
-        and _PHONE_LIKE.search(name) is None
-    )
