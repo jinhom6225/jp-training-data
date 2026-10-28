@@ -2,7 +2,7 @@
 
 Each function is a port of the app's Dart rule named in its docstring, and
 all of them are asserted against scraper/rule_cases.json (a copy of the
-app's tools/rule_cases.json). Python and Dart regexes differ in three ways
+app's tools/rule_cases.json). Python and Dart regexes differ in two ways
 that matter here, so every pattern below:
 
 - spells digits as ``[0-9]`` (Python's ``\\d`` also matches full-width digits);
