@@ -1,3 +1,30 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "id": "tokyo-toritsu-202704",
+      "origin": "override",
+      "kind": "public",
+      "name": "都立職業能力開発センター（各校）",
+      "fields": ["it", "office", "medical", "care", "design", "building", "manufacturing", "other"],
+      "city": null,
+      "address": null,
+      "rounds": [{"no": 1, "start": "2027-01-07", "end": "2027-01-29"}],
+      "trainingStart": null,
+      "trainingEnd": null,
+      "hours": null,
+      "selfCost": null,
+      "capacity": null,
+      "selectionDate": null,
+      "resultDate": null,
+      "conditions": "募集期間は予定。選考日は2027年2月9日・10日・12日のいずれか（予定）。ジョブセレクト科・実務作業科・東京障害者職業能力開発校の科目は対象外",
+      "childcare": false,
+      "provider": null,
+      "phone": null,
+      "sourceUrl": "https://www.hataraku.metro.tokyo.lg.jp/kyushokusha-kunren/school/annai/index.html",
+      "sourceName": "TOKYOはたらくネット",
+      "checkedAt": "2026-10-29T04:10:00+09:00",
+      "entryMonth": "2027-04",
+      "targetCourses": ["4月入校の各科目（科目一覧は未公表）"]
+    }
+  ]
 }
