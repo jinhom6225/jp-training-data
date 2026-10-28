@@ -34,10 +34,12 @@ categories:
   # 理容・美容, 調理, 農業, 旅行・観光, その他の分野.
 
 keywords:
+  # Bare システム / エンジニア / コンピュータ are not IT: HWIS uses them for
+  # 機械システム, 電気エンジニア, 医事コンピュータ … (plan A11). Only
+  # IT-specific compounds count.
   it:
     - プログラミング
     - プログラマ
-    - システム
     - ネットワーク
     - サーバ
     - クラウド
@@ -45,10 +47,14 @@ keywords:
     - データ
     - アプリ
     - ソフトウェア
+    - ソフトエンジニア
     - 情報処理
     - 情報技術
-    - コンピュータ
-    - エンジニア
+    - 情報システム
+    - システム開発
+    - システムエンジニア
+    - システム・エンジニア
+    - 組込み
     - Web開発
     - Webプログラ
     - Webエンジニア
@@ -127,6 +133,9 @@ keywords:
     - Web制作
     - ホームページ
     - 製図
+    # Printing (DTP, prepress) sits with design; the 製造関連分野 category
+    # adds manufacturing (plan A11).
+    - 印刷
     - 建築CAD
     - CAD
   building:
@@ -167,6 +176,8 @@ keywords:
     - 金型
     - 鋳造
     - 生産
+    # Longer than システムエンジニア (it), so production systems stay here.
+    - 生産システムエンジニア
     - 組立
     - ロボット
     - メカトロ
