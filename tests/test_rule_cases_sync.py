@@ -1,7 +1,8 @@
 """The pipeline's scraper/rule_cases.json must be a byte-identical copy of
 the app's tools/rule_cases.json (plan D8). The app repo path comes from
-APP_REPO (default: ../jp_job_training_alert next to this repo). Skipped
-when the app repo is not on this machine (for example in Actions)."""
+APP_REPO (default: jp_job_training_alert next to this repo or one level
+up). Skipped when the app repo is not on this machine (for example in
+Actions)."""
 
 from __future__ import annotations
 
@@ -14,8 +15,10 @@ from tests.conftest import ROOT, RULE_CASES_PATH
 
 
 def _app_rule_cases() -> Path:
-    app_repo = Path(os.environ.get("APP_REPO", ROOT.parent / "jp_job_training_alert"))
-    return app_repo / "tools" / "rule_cases.json"
+    if "APP_REPO" in os.environ:
+        return Path(os.environ["APP_REPO"]) / "tools" / "rule_cases.json"
+    candidates = [base / "jp_job_training_alert" / "tools" / "rule_cases.json" for base in (ROOT.parent, ROOT.parent.parent)]
+    return next((c for c in candidates if c.exists()), candidates[0])
 
 
 def test_rule_cases_copy_matches_app_repo() -> None:

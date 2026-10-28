@@ -1,7 +1,7 @@
 """HWIS 職業訓練詳細 page → the fact boxes the app shows (research §1-5).
 
 Only short facts are read: name, kind, 分類 string, 募集状況, 訓練期間,
-訓練時間, 自己負担額, 募集定員, 募集期間 1-3回目 with their 選考日 and
+訓練時間, 自己負担額, 募集定員, 募集期間 1-5回目 with their 選考日 and
 選考結果通知日, 訓練対象者の条件, 実施機関 / 施設 / 会場所在地. 訓練内容
 prose is never read. HWIS detail pages carry no phone number (checked
 2026-10-28), so ``phone`` is not parsed.

@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta, timezone
 from scraper import assemble, parse_detail
 from scraper.collect import DetailResult
 from scraper.parse_list import ListRow
-from tests.conftest import fixture_bytes, load_rule_cases
+from tests.conftest import five_round_detail, fixture_bytes, load_rule_cases
 
 JST = timezone(timedelta(hours=9))
 TODAY = date(2026, 10, 20)
@@ -131,3 +131,14 @@ def test_course_status() -> None:
     assert assemble.status_on(course, date(2026, 10, 5)) == "募集中"
     assert assemble.status_on(course, date(2026, 10, 20)) == "募集前"
     assert assemble.status_on(course, date(2026, 11, 20)) is None
+
+
+def test_four_and_five_round_courses_are_kept() -> None:
+    d = parse_detail.parse_detail_page(five_round_detail())
+    assert d is not None
+    four = parse_detail.Detail(**{**d.__dict__, "rounds": d.rounds[:4]})
+    rows = {"02-09-14-0013": row("02-09-14-0013", kind="public"), "02-09-14-0014": row("02-09-14-0014", kind="public")}
+    out = assemble.assemble(rows, {}, results({"02-09-14-0013": d, "02-09-14-0014": four}),
+                            childcare=set(), today=TODAY, recheck=[])
+    assert out.invalid == {}
+    assert sorted(len(c["rounds"]) for c in out.courses["14"]) == [4, 5]

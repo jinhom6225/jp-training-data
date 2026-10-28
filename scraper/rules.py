@@ -46,7 +46,7 @@ SUPPORTED_SCHEMA_VERSION = 1
 MAX_META_BYTES = 64 * 1024
 MAX_PREF_BYTES = 1024 * 1024
 MAX_COURSES_PER_FILE = 2000
-MAX_ROUNDS = 3
+MAX_ROUNDS = 5  # HWIS shows up to 5 募集期間 rounds (plan A8)
 MAX_FIELDS_PER_COURSE = 8
 MAX_TARGET_COURSES = 20
 MAX_CAPACITY = 999
@@ -219,7 +219,7 @@ class Round:
 
 
 def round_problems(rounds: list[Round]) -> list[str]:
-    """1-3 rounds, ``no`` 1-3 strictly ascending, ``start ≤ end``, and
+    """1-5 rounds, ``no`` 1-5 strictly ascending, ``start ≤ end``, and
     neither date goes back from the previous round (touching and
     overlapping rounds pass)."""
     problems: list[str] = []

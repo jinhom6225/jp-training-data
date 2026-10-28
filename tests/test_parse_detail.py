@@ -9,7 +9,7 @@ import pytest
 
 from scraper import parse_detail
 from scraper.parse_list import StructureError
-from tests.conftest import fixture_bytes
+from tests.conftest import five_round_detail, fixture_bytes
 
 
 def detail(key: str) -> parse_detail.Detail:
@@ -131,3 +131,11 @@ def test_zero_hours_of_e_learning_become_none() -> None:
     html = html.replace("<span>16:00</span>", "<span>00:00</span>").replace("<span>20:50</span>", "<span>00:00</span>")
     d = parse_detail.parse_detail_page(html.encode("utf-8"))
     assert d is not None and d.hours is None
+
+
+def test_five_rounds_are_all_read() -> None:
+    d = parse_detail.parse_detail_page(five_round_detail())
+    assert d is not None
+    assert [r.no for r in d.rounds] == [1, 2, 3, 4, 5]
+    assert (d.rounds[3].start, d.rounds[4].end) == (date(2027, 2, 23), date(2027, 3, 24))
+    assert d.rounds[4].selection == date(2027, 3, 27)

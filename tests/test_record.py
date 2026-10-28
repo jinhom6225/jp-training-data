@@ -8,7 +8,7 @@ import pytest
 
 from scraper import parse_detail, record
 from scraper.validate import course_problems
-from tests.conftest import fixture_bytes
+from tests.conftest import five_round_detail, fixture_bytes
 
 JST = timezone(timedelta(hours=9))
 CHECKED = datetime(2026, 10, 28, 6, 41, tzinfo=JST)
@@ -124,3 +124,12 @@ def test_hidden_characters_are_removed_by_normalize() -> None:
 def test_last_open_end() -> None:
     course = build("02-09-14-0013")
     assert record.last_end(course) == date(2027, 2, 22)
+
+
+def test_five_round_course_is_published_whole() -> None:
+    d = parse_detail.parse_detail_page(five_round_detail())
+    assert d is not None
+    course = record.build_course("02-09-14-0013", d, childcare=False, checked_at=CHECKED, today=date(2027, 3, 1))
+    assert [r["no"] for r in course["rounds"]] == [1, 2, 3, 4, 5]
+    assert course["selectionDate"] == "2027-03-15"
+    assert course_problems(course, "14") == []

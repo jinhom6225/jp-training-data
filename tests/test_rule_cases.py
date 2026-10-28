@@ -1,9 +1,7 @@
 """Every case of the shared rule file (plan D8), the same cases the app's
 Dart tests assert (test/data/rule_cases_test.dart, url_rules_test.dart).
 If one fails, the pipeline and the app disagree and the app would reject a
-whole pref file. The ``pushNames`` section belongs to the app's push
-payload; the pipeline sends no push (FCM dropped 2026-10-28), so that
-section is only kept in the synced copy."""
+whole pref file."""
 
 from __future__ import annotations
 
