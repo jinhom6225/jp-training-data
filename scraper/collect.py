@@ -3,9 +3,12 @@
 - ``collect_lists``: one search per prefecture with both course types
   (公共職業訓練 + 求職者支援訓練) and the default 募集期間 (today onward, so
   募集中 + 募集前), paged with 次へ. A failed search is retried once with a
-  new session; a second failure is reported as a structure error.
+  new session; a second failure is reported as a structure error, and a
+  third prefecture failing in a row stops the run (``BlockedError``).
 - ``collect_childcare``: the national 託児サービスあり search → course ids.
 - ``fetch_details``: detail pages one by one; a broken page is retried once.
+  10 failures in a row, or more than 10% failed after 50 attempts, stops
+  the run (``BlockedError``).
 
 ``Cache`` keeps list rows and raw detail pages on disk so a run can be
 rebuilt offline (``run.py --from-cache``), e.g. after a keyword change,
@@ -21,7 +24,7 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Callable, Iterable
 
-from scraper.errors import FetchError, StructureError
+from scraper.errors import BlockedError, FetchError, StructureError
 from scraper.hwis_client import HwisClient
 from scraper.parse_detail import Detail, parse_detail_page
 from scraper.parse_list import ListRow, parse_list_page
@@ -29,6 +32,11 @@ from scraper.parse_list import ListRow, parse_list_page
 log = logging.getLogger(__name__)
 
 COURSE_TYPES = [("courseShubetsuCKBox", "1"), ("courseShubetsuCKBox", "2")]
+# Circuit breaker: keep hammering a failing site neither politely nor usefully.
+MAX_CONSECUTIVE_DETAIL_FAILURES = 10
+MAX_DETAIL_FAILURE_RATE = 0.10
+MIN_ATTEMPTS_FOR_RATE = 50
+MAX_CONSECUTIVE_PREF_FAILURES = 3
 CHILDCARE = [("tJServiceAriCKBox", "1")]
 MAX_PAGES = 150
 _REGIONS = (
@@ -91,13 +99,20 @@ def collect_lists(client: HwisClient, prefs: Iterable[str]) -> ListResult:
     rows: dict[str, ListRow] = {}
     announced: dict[str, int] = {}
     errors: list[str] = []
+    failed_in_a_row = 0
     for code in prefs:
         try:
             found, total = _search_with_retry(client, pref_conditions(code), f"pref {code}")
         except (StructureError, FetchError) as error:
             errors.append(f"pref {code}: {error}")
             log.error("pref %s: list failed twice: %s", code, error)
+            failed_in_a_row += 1
+            if failed_in_a_row >= MAX_CONSECUTIVE_PREF_FAILURES:
+                raise BlockedError(
+                    f"{failed_in_a_row} prefectures in a row failed (last: {error})"
+                ) from error
             continue
+        failed_in_a_row = 0
         announced[code] = total
         for row in found:
             rows.setdefault(row.course_id, row)
@@ -175,6 +190,13 @@ def _fetch_one(client: HwisClient, course_id: str) -> tuple[bytes, Detail | None
     return content, parse_detail_page(content)
 
 
+def _check_breaker(failed_in_a_row: int, failures: int, attempts: int) -> None:
+    if failed_in_a_row >= MAX_CONSECUTIVE_DETAIL_FAILURES:
+        raise BlockedError(f"{failed_in_a_row} consecutive detail failures")
+    if attempts >= MIN_ATTEMPTS_FOR_RATE and failures / attempts > MAX_DETAIL_FAILURE_RATE:
+        raise BlockedError(f"detail failure rate {failures}/{attempts} over {MAX_DETAIL_FAILURE_RATE:.0%}")
+
+
 def fetch_details(
     client: HwisClient | None,
     ids: Iterable[str],
@@ -183,12 +205,14 @@ def fetch_details(
     cache: Cache | None = None,
 ) -> DetailResult:
     """Detail of every id. Without a client the pages come from ``cache``
-    only. ``BlockedError`` propagates and stops the run."""
+    only. ``BlockedError`` (403/429, or the circuit breaker while fetching
+    from HWIS) propagates and stops the run."""
     details: dict[str, Detail] = {}
     fetched_at: dict[str, datetime] = {}
     gone: set[str] = set()
     failures: dict[str, str] = {}
     targets = list(ids)
+    failed_in_a_row = 0
     for index, course_id in enumerate(targets, start=1):
         try:
             if client is None:
@@ -204,7 +228,11 @@ def fetch_details(
                     cache.put_detail(course_id, content, stamp)
         except (StructureError, FetchError) as error:
             failures[course_id] = str(error)
+            failed_in_a_row += 1
+            if client is not None:
+                _check_breaker(failed_in_a_row, len(failures), index)
             continue
+        failed_in_a_row = 0
         if detail is None:
             gone.add(course_id)
         else:

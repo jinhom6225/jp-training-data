@@ -103,3 +103,52 @@ def test_cache_round_trip(tmp_path: Path) -> None:
     assert cache.load_childcare() == {"01-08-13-0515"}
     cache.save_childcare(None)
     assert cache.load_childcare() is None
+
+
+def _ids(n: int) -> list[str]:
+    return [f"02-08-13-{i:04d}" for i in range(1, n + 1)]
+
+
+def test_ten_consecutive_detail_failures_stop_the_run() -> None:
+    ids = _ids(12)
+    client, transport = client_for(FakeHwis(broken_detail=set(ids[:10])))
+    with pytest.raises(BlockedError, match="consecutive"):
+        collect.fetch_details(client, ids, now=lambda: None)
+    asked = {"-".join((c.params or {}).get(k, "") for k in ("kRNShubetsu_Detail", "shinseiNendo_Detail", "tDFKNo_Detail", "kRNTsuban_Detail")) for c in transport.calls}
+    assert ids[10] not in asked
+
+
+def test_failure_rate_over_ten_percent_after_fifty_stops_the_run() -> None:
+    ids = _ids(60)
+    broken = {i for n, i in enumerate(ids, start=1) if n % 8 == 0}  # 12.5 %, never 10 in a row
+    client, _ = client_for(FakeHwis(broken_detail=broken))
+    with pytest.raises(BlockedError, match="rate"):
+        collect.fetch_details(client, ids, now=lambda: None)
+
+
+def test_failure_rate_of_ten_percent_is_tolerated() -> None:
+    ids = _ids(60)
+    broken = {i for n, i in enumerate(ids, start=1) if n % 10 == 0}
+    client, _ = client_for(FakeHwis(broken_detail=broken))
+    result = collect.fetch_details(client, ids, now=lambda: None)
+    assert len(result.failures) == 6
+
+
+def test_offline_rebuild_has_no_circuit_breaker(tmp_path: Path) -> None:
+    result = collect.fetch_details(None, _ids(12), now=lambda: None, cache=collect.Cache(tmp_path))
+    assert len(result.failures) == 12
+
+
+def test_three_failed_prefectures_in_a_row_stop_the_run() -> None:
+    pages = {code: ["system_error.html"] for code in ("13", "14", "15")}
+    client, transport = client_for(FakeHwis(pref_pages=pages))
+    with pytest.raises(BlockedError, match="3 prefectures"):
+        collect.collect_lists(client, ["13", "14", "15", "16"])
+    assert not any(("toukaiSCKBox", "16") in (c.data or []) or ("kousinetu_HokurikuSCKBox", "16") in (c.data or []) for c in transport.calls)
+
+
+def test_two_failed_prefectures_then_success_continue() -> None:
+    pages = {"14": ["system_error.html"], "15": ["system_error.html"], "13": ["list_13_p1.html", "list_13_p2.html"]}
+    client, _ = client_for(FakeHwis(pref_pages=pages))
+    result = collect.collect_lists(client, ["14", "15", "13", "16"])
+    assert len(result.errors) == 2 and len(result.rows) == 48
