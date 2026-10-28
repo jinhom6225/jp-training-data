@@ -44,6 +44,7 @@ _DISTRICT = re.compile(r"(.+?郡.+?[町村])")
 _CITY = re.compile(r"(.+?市)")
 _WARD = re.compile(r"(.+?区)")
 _TOWN = re.compile(r"(.+?[町村])")
+_CUT_PATTERNS = {"郡": _DISTRICT, "市": _CITY, "区": _WARD}
 _ELLIPSIS = "…"
 
 
@@ -67,8 +68,8 @@ def _without_prefecture(address: str) -> str:
 
 
 def city_from_address(address: str | None) -> str | None:
-    """市区町村 at the start of an address (prefecture optional):
-    政令市 + 区, 郡 + 町村, 市, 東京 区, or 町村."""
+    """市区町村 at the start of an address (prefecture optional): 政令市 + 区,
+    else cut at the first 郡 (+ 町村), 市 or 区, else at the first 町 or 村."""
     if not address:
         return None
     rest = _without_prefecture(address.strip())
@@ -78,13 +79,10 @@ def city_from_address(address: str | None) -> str | None:
     designated = _DESIGNATED_WARD.match(rest)
     if designated:
         return designated.group(0)
-    district_first = "郡" in rest and ("市" not in rest or rest.index("郡") < rest.index("市"))
-    patterns = (_DISTRICT, _CITY, _WARD, _TOWN) if district_first else (_CITY, _WARD, _TOWN)
-    for pattern in patterns:
-        match = pattern.match(rest)
-        if match:
-            return clip(match.group(1), TEXT_LIMITS["city"])
-    return None
+    marks = [(rest.find(mark, 1), mark) for mark in _CUT_PATTERNS if rest.find(mark, 1) > 0]
+    pattern = _CUT_PATTERNS[min(marks)[1]] if marks else _TOWN
+    match = pattern.match(rest) or _TOWN.match(rest)
+    return clip(match.group(1), TEXT_LIMITS["city"]) if match else None
 
 
 def _reference_round(rounds: list[DetailRound], today: date) -> DetailRound:

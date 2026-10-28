@@ -117,3 +117,17 @@ def test_japanese_date() -> None:
     assert parse_detail.japanese_date("2026年1月5日") == date(2026, 1, 5)
     assert parse_detail.japanese_date("令和8年1月5日") is None
     assert parse_detail.japanese_date("2026年2月30日") is None
+
+
+def test_label_inside_prose_does_not_hide_the_box() -> None:
+    # 訓練内容 of this course says 「訓練期間中から…」 before the real box.
+    d = detail("03-08-13-0527")
+    assert (d.training_start, d.training_end) == (date(2027, 1, 4), date(2027, 6, 30))
+    assert d.hours is not None and d.self_cost is not None
+
+
+def test_zero_hours_of_e_learning_become_none() -> None:
+    html = fixture_bytes("detail_01-08-13-0515.html").decode("utf-8")
+    html = html.replace("<span>16:00</span>", "<span>00:00</span>").replace("<span>20:50</span>", "<span>00:00</span>")
+    d = parse_detail.parse_detail_page(html.encode("utf-8"))
+    assert d is not None and d.hours is None

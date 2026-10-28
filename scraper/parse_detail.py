@@ -66,7 +66,9 @@ def _course_label_spans(doc: lxml.html.HtmlElement, label: str) -> list[str | No
 
 
 def _labelled_div(doc: lxml.html.HtmlElement, label: str) -> lxml.html.HtmlElement | None:
-    found = doc.xpath(f"//div[contains(text(), '{label}')]")
+    """The div whose own text starts with 「label：」 (prose such as
+    「訓練期間中から…」 in 訓練内容 must not match)."""
+    found = doc.xpath(f"//div[starts-with(normalize-space(text()), '{label}：')]")
     return found[0] if found else None
 
 
@@ -115,8 +117,8 @@ def _hours(doc: lxml.html.HtmlElement) -> str | None:
     if div is None:
         return None
     times = [element_text(s) for s in div.findall("span")][:2]
-    if len(times) != 2 or not all(times):
-        return None
+    if len(times) != 2 or not all(times) or times[0] == times[1] == "00:00":
+        return None  # e-learning courses show 00:00〜00:00
     return f"{times[0]}〜{times[1]}"
 
 
