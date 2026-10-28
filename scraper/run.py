@@ -13,7 +13,8 @@
 4. Build, classify and validate courses; merge the 東京 overrides.
 5. Anomaly check (D7): on any reason, notify Telegram and publish nothing.
 6. Write out/site/{meta.json, stats.json, pref/NN.json}; out/report.json
-   is always written.
+   is always written, out/summary.txt (the success notice text) only when
+   the site was written.
 
 Exit codes: 0 published, 2 anomaly, 3 blocked by HWIS, 1 other error.
 No push is sent (FCM dropped 2026-10-28).
@@ -42,11 +43,13 @@ from scraper.errors import BlockedError
 from scraper.hwis_client import HwisClient, RequestsTransport
 from scraper.publish import Previous, PreviousUnreadable, load_previous, write_site
 from scraper.rules import PREF_CODES
+from scraper.summary import SummaryFacts, build_summary
 
 log = logging.getLogger("scraper.run")
 JST = timezone(timedelta(hours=9))
 DEFAULT_PAGES_URL = "https://jinhom6225.github.io/jp-training-data/"
 EXIT_OK, EXIT_ERROR, EXIT_ANOMALY, EXIT_BLOCKED = 0, 1, 2, 3
+SUMMARY_FILE = "summary.txt"
 WEDNESDAY = 2
 
 
@@ -146,6 +149,33 @@ def _load_comparison_base(config: Config, deps: Deps, started: datetime) -> tupl
     return previous, None
 
 
+def _change(previous: Previous | None, courses: dict[str, list[dict]], counts: dict[str, int]) -> dict:
+    """Course ids added / removed and prefectures whose count moved,
+    against the previous publish (for the success summary)."""
+    current = {c["id"] for items in courses.values() for c in items}
+    before = {c["id"] for items in previous.courses.values() for c in items} if previous else set()
+    return {
+        "hadPrevious": previous is not None,
+        "added": len(current - before),
+        "removed": len(before - current),
+        "changedPrefs": sum(1 for code, n in counts.items() if previous is None or previous.counts.get(code) != n),
+        "zeroPrefs": sorted(code for code, n in counts.items() if n == 0),
+    }
+
+
+def _write_summary(config: Config, report: dict) -> None:
+    change = report["change"]
+    facts = SummaryFacts(
+        total=report["total"], added=change["added"], removed=change["removed"],
+        had_previous=change["hadPrevious"], changed_prefs=change["changedPrefs"],
+        zero_prefs=change["zeroPrefs"], other_ratio=report["otherRatio"],
+        tokyo_notices=len(report["overrides"]["added"]), full=report["mode"] == "full",
+        duration_sec=report["durationSec"],
+        meta_url=(config.pages_url or DEFAULT_PAGES_URL).rstrip("/") + "/meta.json",
+    )
+    (config.out / SUMMARY_FILE).write_text(build_summary(facts) + "\n", encoding="utf-8")
+
+
 def _collect(config: Config, deps: Deps, started: datetime, report: dict) -> int:
     today = started.date()
     report["bootstrap"] = config.bootstrap
@@ -191,6 +221,7 @@ def _collect(config: Config, deps: Deps, started: datetime, report: dict) -> int
     stats = write_site(config.out / "site", courses, generated_at=started, report=summary)
     report["total"] = stats["total"]
     report["otherRatio"] = stats["otherRatio"]
+    report["change"] = _change(previous, courses, counts)
     log.info("published %d courses (other %.1f%%)", stats["total"], stats["otherRatio"] * 100)
     return EXIT_OK
 
@@ -199,6 +230,7 @@ def execute(config: Config, deps: Deps) -> int:
     started = deps.now().astimezone(JST)
     clock = time.monotonic()
     report: dict = {"startedAt": started.isoformat(timespec="seconds"), "anomalies": []}
+    (config.out / SUMMARY_FILE).unlink(missing_ok=True)
     try:
         code = _collect(config, deps, started, report)
     except BlockedError as error:
@@ -215,6 +247,8 @@ def execute(config: Config, deps: Deps) -> int:
     report["durationSec"] = round(time.monotonic() - clock, 1)
     report["exitCode"] = code
     _write_report(config.out, report)
+    if code == EXIT_OK:
+        _write_summary(config, report)
     return code
 
 

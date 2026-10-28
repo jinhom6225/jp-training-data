@@ -268,3 +268,23 @@ def test_fetch_url_other_statuses_fail_the_run(monkeypatch: pytest.MonkeyPatch, 
 def test_parse_args_bootstrap() -> None:
     assert run.parse_args(["--bootstrap"]).bootstrap is True
     assert run.parse_args([]).bootstrap is False
+
+
+def test_success_writes_a_summary(tmp_path: Path) -> None:
+    h = Harness(tmp_path)
+    assert run.execute(h.config(), h.deps()) == 0
+    first = (tmp_path / "out" / "summary.txt").read_text(encoding="utf-8")
+    assert first.startswith("✅ 배포 완료: 코스 48개")
+    assert "직전 배포본 없음" in first
+    assert "https://pages.test/data/meta.json" in first
+    h.publish_out()
+    assert run.execute(h.config(bootstrap=False), h.deps()) == 0
+    second = (tmp_path / "out" / "summary.txt").read_text(encoding="utf-8")
+    assert "직전 대비 변동 없음" in second
+
+
+def test_failed_run_leaves_no_summary(tmp_path: Path) -> None:
+    h = Harness(tmp_path)
+    assert run.execute(h.config(), h.deps()) == 0
+    assert run.execute(h.config(force_anomaly=True), h.deps()) == run.EXIT_ANOMALY
+    assert not (tmp_path / "out" / "summary.txt").exists()
