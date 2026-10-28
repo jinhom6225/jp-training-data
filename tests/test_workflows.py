@@ -42,3 +42,29 @@ def test_every_action_is_pinned_to_a_commit() -> None:
             if "uses:" in line:
                 ref = line.split("uses:")[1].split("#")[0].strip()
                 assert len(ref.split("@")[1]) == 40, line
+
+
+MORNING = "30 21 * * *"
+
+
+def test_success_summary_wiring() -> None:
+    assert MORNING in [c["cron"] for c in COLLECT[True]["schedule"]]
+    steps = {s.get("name"): s for s in COLLECT["jobs"]["collect"]["steps"]}
+    resolve = steps["Resolve mode"]
+    # Morning vs evening comes from the cron string, not the clock.
+    assert resolve["env"]["SCHEDULE"] == "${{ github.event.schedule }}"
+    assert resolve["env"]["EVENT"] == "${{ github.event_name }}"
+    assert f'"{MORNING}"' in resolve["run"]
+    assert "workflow_dispatch" in resolve["run"]
+    assert COLLECT["jobs"]["collect"]["outputs"]["summary"] == "${{ steps.summary.outputs.summary }}"
+    assert COLLECT["jobs"]["collect"]["outputs"]["announce"] == "${{ steps.mode.outputs.announce }}"
+    assert "out/summary.txt" in steps["Summary"]["run"]
+    job = COLLECT["jobs"]["summary"]
+    assert job["needs"] == ["collect", "deploy"]
+    assert job["if"] == "needs.deploy.result == 'success' && needs.collect.outputs.announce == 'true'"
+    assert job["permissions"] == {"contents": "read"}
+    run = job["steps"][0]["run"]
+    assert "::warning::" in run
+    assert '--data-urlencode "text=$TEXT"' in run
+    assert job["steps"][0]["env"]["SUMMARY"] == "${{ needs.collect.outputs.summary }}"
+    assert job["steps"][0]["env"]["TRIGGER"] == "${{ needs.collect.outputs.trigger }}"
