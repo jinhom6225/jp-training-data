@@ -6,6 +6,10 @@
 #   normal | full  force that detail mode
 #   dry            auto, but never deploy (check a fix first)
 #   force-anomaly  take the anomaly path: Telegram notice, no deploy
+#   bootstrap      FIRST PUBLISH ONLY: full run that may start without a
+#                  readable previous site. Every other run (scheduled ones
+#                  included) treats a missing/unreadable previous site as an
+#                  anomaly and publishes nothing (see README "First run").
 name: collect
 
 on:
@@ -15,9 +19,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "auto | normal | full | dry | force-anomaly"
+        description: "auto | normal | full | dry | force-anomaly | bootstrap"
         type: choice
-        options: [auto, normal, full, dry, force-anomaly]
+        options: [auto, normal, full, dry, force-anomaly, bootstrap]
         default: auto
 
 permissions:
@@ -30,7 +34,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     outputs:
       deploy: ${{ steps.mode.outputs.deploy }}
     steps:
@@ -60,6 +64,7 @@ jobs:
             auto|normal|full) mode="$INPUT_MODE" ;;
             dry) mode=auto; deploy=false ;;
             force-anomaly) mode=auto; deploy=false; extra="--force-anomaly" ;;
+            bootstrap) mode=full; extra="--bootstrap" ;;
             *) echo "unknown mode: $INPUT_MODE"; exit 1 ;;
           esac
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
@@ -95,7 +100,7 @@ jobs:
 
       - name: Notify failure
         # Only failures run.py could not report itself (setup, tests, crash).
-        if: failure() && (steps.collect.outputs.code == '' || hashFiles('out/report.json') == '')
+        if: (failure() || cancelled()) && (steps.collect.outputs.code == '' || hashFiles('out/report.json') == '')
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -117,3 +122,34 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346  # v5.0.1
+
+  # Failures the collect job cannot report itself: a failed or cancelled
+  # deploy, or a collect job that was cancelled (timeout, runner lost).
+  # A collect job that failed has already notified (run.py or its own
+  # "Notify failure" step), so it is not repeated here.
+  notify:
+    needs: [collect, deploy]
+    if: always() && (needs.deploy.result == 'failure' || needs.deploy.result == 'cancelled' || needs.collect.result == 'cancelled')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          COLLECT: ${{ needs.collect.result }}
+          DEPLOY: ${{ needs.deploy.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          text="jp-training-data run problem: collect=$COLLECT deploy=$DEPLOY, see $RUN_URL"
+          echo "$text"
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "::warning::TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not set; Telegram notices are off"
+            exit 0
+          fi
+          curl --silent --show-error --fail --max-time 15 -o /dev/null \
+            -d "chat_id=$TELEGRAM_CHAT_ID" --data-urlencode "text=$text" \
+            "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            || echo "::warning::Telegram send failed"
