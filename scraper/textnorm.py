@@ -23,12 +23,19 @@ def parse_html(content: bytes) -> lxml.html.HtmlElement:
         raise StructureError(f"not an HTML page: {error}") from error
 
 
+def _visible(char: str) -> bool:
+    return unicodedata.category(char) not in ("Cf", "Cc")
+
+
 def normalize(text: str | None) -> str | None:
-    """NFKC (全角 → 半角 digits and letters), whitespace runs → one space,
-    trimmed; None when nothing is left. The data files carry one-line text."""
+    """NFKC (全角 → 半角 digits and letters), whitespace runs (NBSP, line
+    breaks, U+3000 …) → one space, invisible format and control characters
+    removed, trimmed; None when nothing is left. The data files carry
+    one-line text that passes the app's text rule."""
     if text is None:
         return None
-    flat = _SPACE.sub(" ", unicodedata.normalize("NFKC", text)).strip()
+    spaced = _SPACE.sub(" ", unicodedata.normalize("NFKC", text))
+    flat = "".join(c for c in spaced if _visible(c)).strip()
     return flat or None
 
 
