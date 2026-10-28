@@ -1,0 +1,177 @@
+# Field classification table (research §3.3, plan Phase 1).
+#
+# 1. categories: substrings of the HWIS 訓練コース分類 string (after NFKC),
+#    e.g. 「実践コース(IT分野)」 or 「離転職者訓練(施設内)(建設関連分野)」.
+#    Longer matches win and consume their text (「医療事務分野」 is not also
+#    「事務分野」). A `broad` category (it spans several app fields) is used
+#    only when the course name matches no keyword.
+# 2. keywords: substrings of the course name (after NFKC). Longer keywords
+#    win: a match consumes its characters, so 「医療事務」 is medical and
+#    does not also count as 「事務」 (office). The same keyword may sit under
+#    two fields (建築CAD → design + building).
+#    Pure-ASCII keywords match case-insensitively; two-letter ones (IT, AI)
+#    only as whole words, so 「SUIT」 is not IT.
+# 3. Neither matches → other.
+#
+# Tune after each full collection: the target is other ≤ 20% (stats.json).
+
+categories:
+  - {match: "IT分野", fields: [it]}
+  - {match: "情報通信分野", fields: [it]}
+  - {match: "情報処理分野", fields: [it]}
+  - {match: "営業・販売・事務分野", fields: [office]}
+  - {match: "事務分野", fields: [office]}
+  - {match: "医療事務分野", fields: [medical]}
+  - {match: "介護福祉分野", fields: [care]}
+  - {match: "介護・医療・福祉分野", fields: [care], broad: true}
+  - {match: "デザイン分野", fields: [design]}
+  - {match: "建設関連分野", fields: [building]}
+  - {match: "製造関連分野", fields: [manufacturing]}
+  - {match: "金属関連分野", fields: [manufacturing]}
+  - {match: "機械関連分野", fields: [manufacturing]}
+  - {match: "電気関連分野", fields: [building]}
+  # Left as other on purpose (research §3.3): 輸送サービス (自動車整備),
+  # 理容・美容, 調理, 農業, 旅行・観光, その他の分野.
+
+keywords:
+  it:
+    - プログラミング
+    - プログラマ
+    - システム
+    - ネットワーク
+    - サーバ
+    - クラウド
+    - セキュリティ
+    - データ
+    - アプリ
+    - ソフトウェア
+    - 情報処理
+    - 情報技術
+    - コンピュータ
+    - エンジニア
+    - Web開発
+    - Webプログラ
+    - Webエンジニア
+    - Java
+    - Python
+    - PHP
+    - Linux
+    - ICT
+    - IoT
+    - DX
+    - IT
+    - AI
+  office:
+    - 事務
+    - 簿記
+    - 経理
+    - 会計
+    - 貿易
+    - 営業
+    - 販売
+    - 総務
+    - 人事
+    - 労務
+    - 秘書
+    - パソコン
+    - オフィス
+    - ビジネス
+    - 宅地建物
+    - 宅建
+    - 不動産
+    - ファイナンシャル
+    - 金融
+    - 税務
+    - 給与
+    - Excel
+    - エクセル
+    - MOS
+    - OA
+    - FP
+  medical:
+    - 医療事務
+    - 調剤薬局事務
+    - 薬局事務
+    - 調剤事務
+    - 調剤
+    - 歯科
+    - 医科
+    - 診療報酬
+    - レセプト
+    - 介護事務
+    - 医療
+  care:
+    - 介護
+    - 福祉
+    - 保育
+    - ヘルパー
+    - 初任者研修
+    - 実務者研修
+    - 看護助手
+    - 障がい
+    - 障害
+    - 高齢者
+    - ケア
+    - 子育て
+  design:
+    - デザイン
+    - デザイナー
+    - グラフィック
+    - イラスト
+    - DTP
+    - Illustrator
+    - Photoshop
+    - 動画
+    - 映像
+    - 広告
+    - Web制作
+    - ホームページ
+    - 製図
+    - 建築CAD
+    - CAD
+  building:
+    - 建築CAD
+    - 建築
+    - 建設
+    - 住宅
+    - 住居
+    - 設備
+    - 電気
+    - 電工
+    - ビル
+    - マンション
+    - 内装
+    - 外装
+    - 左官
+    - タイル
+    - 大工
+    - 木造
+    - 配管
+    - 空調
+    - 冷凍
+    - 施工
+    - リフォーム
+    - リノベーション
+    - エクステリア
+    - 土木
+    - 測量
+  manufacturing:
+    - 溶接
+    - 板金
+    - 機械
+    - 金属
+    - 加工
+    - ものづくり
+    - 製造
+    - 旋盤
+    - 金型
+    - 鋳造
+    - 生産
+    - 組立
+    - ロボット
+    - メカトロ
+    - 制御
+    - 電子
+    - CNC
+    - NC
+    - FA

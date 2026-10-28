@@ -1,0 +1,119 @@
+# Twice-daily HWIS collection → GitHub Pages (plan Phase 1, D2, D5).
+# No push notifications are sent (FCM dropped 2026-10-28).
+#
+# mode (manual runs):
+#   auto           normal run; full detail refresh on Wednesday JST mornings
+#   normal | full  force that detail mode
+#   dry            auto, but never deploy (check a fix first)
+#   force-anomaly  take the anomaly path: Telegram notice, no deploy
+name: collect
+
+on:
+  schedule:
+    - cron: "30 21 * * *"  # 06:30 JST
+    - cron: "30 9 * * *"   # 18:30 JST
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "auto | normal | full | dry | force-anomaly"
+        type: choice
+        options: [auto, normal, full, dry, force-anomaly]
+        default: auto
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    outputs:
+      deploy: ${{ steps.mode.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Tests
+        run: python -m pytest -q
+
+      - name: Resolve mode
+        id: mode
+        env:
+          INPUT_MODE: ${{ inputs.mode || 'auto' }}
+        run: |
+          deploy=true
+          extra=""
+          case "$INPUT_MODE" in
+            auto|normal|full) mode="$INPUT_MODE" ;;
+            dry) mode=auto; deploy=false ;;
+            force-anomaly) mode=auto; deploy=false; extra="--force-anomaly" ;;
+            *) echo "unknown mode: $INPUT_MODE"; exit 1 ;;
+          esac
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "extra=$extra" >> "$GITHUB_OUTPUT"
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
+
+      # run.py sends its own Telegram notice for an anomaly (exit 2), a block
+      # (3) and a caught error (1), and always writes out/report.json.
+      - name: Collect
+        id: collect
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PAGES_BASE_URL: https://jinhom6225.github.io/jp-training-data/
+          MODE: ${{ steps.mode.outputs.mode }}
+          EXTRA: ${{ steps.mode.outputs.extra }}
+        run: |
+          set +e
+          python -m scraper.run --mode "$MODE" --out out $EXTRA
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit $code
+
+      - name: Run report
+        if: always()
+        run: cat out/report.json || true
+
+      - name: Upload site
+        if: steps.mode.outputs.deploy == 'true'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9  # v5.0.0
+        with:
+          path: out/site
+
+      - name: Notify failure
+        # Only failures run.py could not report itself (setup, tests, crash).
+        if: failure() && (steps.collect.outputs.code == '' || hashFiles('out/report.json') == '')
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python -c "import os; from scraper import telegram; telegram.send('jp-training-data collect job failed, see ' + os.environ['RUN_URL'])"
+
+  deploy:
+    needs: collect
+    if: needs.collect.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346  # v5.0.1
